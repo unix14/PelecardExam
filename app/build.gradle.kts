@@ -45,4 +45,20 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Jetpack Compose dependencies
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.foundation)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // Navigation for Jetpack Compose
+    implementation(libs.androidx.navigation.compose)
+
+    // Other Compose libraries I may need
+    implementation(libs.androidx.activity.compose)
+
+    // For debugging UI
+    debugImplementation(libs.androidx.ui.tooling)
 }
