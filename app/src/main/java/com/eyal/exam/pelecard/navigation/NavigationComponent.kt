@@ -11,14 +11,20 @@ import androidx.navigation.compose.composable
 fun NavigationComponent(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
-        startDestination = "home",
+        startDestination = "main",
         modifier = modifier
     ) {
-        composable("home") {
-//            HomeScreen()
+        composable("main") {
+//            MainScreen()
         }
-        composable("details") {
-//            DetailsScreen()
+        composable("settings") {
+//            SettingsScreen()
+        }
+        composable("signature") {
+//            SignatureScreen()
+        }
+        composable("receipt") {
+//            ReceiptScreen()
         }
     }
 }
