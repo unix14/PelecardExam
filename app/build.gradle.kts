@@ -26,6 +26,16 @@ android {
             )
         }
     }
+
+    // Enable Jetpack Compose
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compiler.get()
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -52,6 +62,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.compiler)
 
     // Navigation for Jetpack Compose
     implementation(libs.androidx.navigation.compose)
