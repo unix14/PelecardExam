@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("kapt")  // Kotlin KAPT for annotation processing
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -72,4 +74,8 @@ dependencies {
 
     // For debugging UI
     debugImplementation(libs.androidx.ui.tooling)
+
+    //Hilt - DI (Dependency Injection)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
