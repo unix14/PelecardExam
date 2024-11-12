@@ -26,5 +26,8 @@ fun NavigationComponent(navController: NavHostController, modifier: Modifier = M
         composable("receipt") {
 //            ReceiptScreen()
         }
+        composable("currencyConversion") {
+//            CurrencyConversionScreen()
+        }
     }
 }

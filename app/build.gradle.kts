@@ -84,4 +84,12 @@ dependencies {
 
     // For Flow support in ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    // Retrofit dependencies
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson) // or any other converter depending on your data format (e.g., Moshi)
+
+    // OkHttp for logging (optional but recommended for debugging)
+    implementation(libs.logging.interceptor)
+
 }
