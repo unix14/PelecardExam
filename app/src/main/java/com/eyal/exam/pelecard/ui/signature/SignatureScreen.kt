@@ -1,5 +1,6 @@
 package com.eyal.exam.pelecard.ui.signature
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,13 +13,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.composables.ActionButton
+import com.eyal.exam.pelecard.composables.SignatureView
+import com.eyal.exam.pelecard.models.PaymentDetails
 import com.eyal.exam.pelecard.utils.AreYouSureDialog
+import com.eyal.exam.pelecard.utils.SignatureHelper.Companion.saveBitmapToFile
 
 @Composable
 fun SignatureScreen (
+    paymentDetails: PaymentDetails?,
     viewModel: SignatureViewModel = hiltViewModel()
 ) {
     val showAreYouSureDialog = remember { mutableStateOf(false) }

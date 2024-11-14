@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.composables.ActionButton
 import com.eyal.exam.pelecard.composables.ReceiptDetail
+import com.eyal.exam.pelecard.models.PaymentDetails
 import com.eyal.exam.pelecard.models.UiState
 
 @Composable
 fun ReceiptScreen (
+    paymentDetails: PaymentDetails?,
     viewModel: ReceiptViewModel = hiltViewModel()
 ) {
     // todo use ui state
@@ -38,12 +40,21 @@ fun ReceiptScreen (
         ) {
             Text("Receipt", fontSize = 22.sp)
             /// todo add the receipt details
-            ReceiptDetail(key = "Amount:", value ="aaaa")
-            ReceiptDetail(key = "Payments:", value ="aaaa")
-            ReceiptDetail(key = "Currency:", value ="aaaa")
+            ReceiptDetail(key = "Amount:", value = paymentDetails?.amount.toString())
+            if(paymentDetails?.isPayments == true) {
+                ReceiptDetail(
+                    key = "Payments:",
+                    value = (paymentDetails?.numberOfPayments ?: 1).toString()
+                )
+            }
+            if(paymentDetails?.currency?.isNotEmpty() == true) {
+                ReceiptDetail(key = "Currency:", value = paymentDetails.currency ?: "")
+            }
 
-            Text("Signature:", fontSize = 18.sp)
-            /// todo add signature view
+            if(paymentDetails?.isSignature == true) {
+                Text("Signature:", fontSize = 18.sp)
+                /// todo add signature view
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
