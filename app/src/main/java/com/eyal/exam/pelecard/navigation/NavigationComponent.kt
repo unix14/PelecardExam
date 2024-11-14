@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.eyal.exam.pelecard.ui.main.MainScreen
 
 @Composable
 fun NavigationComponent(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -15,7 +16,7 @@ fun NavigationComponent(navController: NavHostController, modifier: Modifier = M
         modifier = modifier
     ) {
         composable("main") {
-//            MainScreen()
+            MainScreen()
         }
         composable("settings") {
 //            SettingsScreen()

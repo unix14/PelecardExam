@@ -1,5 +1,6 @@
 package com.eyal.exam.pelecard.modules
 
+import android.util.Log
 import com.eyal.exam.pelecard.abs.ApiService
 import com.eyal.exam.pelecard.abs.Constants
 import dagger.Module
@@ -43,7 +44,7 @@ object NetworkModule {
 
             // Add the API key to the URL as a query parameter
             val urlWithApiKey = originalUrl.newBuilder()
-                .addQueryParameter("apikey", apiKey) // Make sure to define Constants.API_KEY
+                .addQueryParameter("apikey", apiKey)
                 .build()
 
             // Create a new request with the modified URL
@@ -51,6 +52,7 @@ object NetworkModule {
                 .url(urlWithApiKey)
                 .build()
 
+            Log.d("NetworkModule", "provideOkHttpClient: $urlWithApiKey")
             chain.proceed(newRequest)
         }
 
