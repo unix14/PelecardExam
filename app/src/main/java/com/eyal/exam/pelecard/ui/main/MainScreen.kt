@@ -3,13 +3,16 @@ package com.eyal.exam.pelecard.ui.main
 import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -18,9 +21,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
@@ -89,6 +94,7 @@ fun MainScreen(
             value = if(paymentDetails.amount != 0) {
                 paymentDetails.amount.toString()
             } else "",
+            isError = paymentDetails.amount <= 0,
             label = { Text("Amount") },
             placeholder = { Text("Enter amount") },
             keyboardOptions = KeyboardOptions(
@@ -131,9 +137,7 @@ fun MainScreen(
                     expanded = isAmountOfPaymentsListExpanded,
                     onExpandedChange = {
                         isAmountOfPaymentsListExpanded = it
-                    },
-                    modifier = Modifier.defaultMinSize()
-                    ) {
+                    },) {
 
                     TextField(
                         value = paymentDetails.numberOfPayments.toString(),
@@ -156,8 +160,15 @@ fun MainScreen(
                                 onClick = {
                                     mainViewModel.updatePaymentDetails(paymentDetails.copy(numberOfPayments = i))
                                     isAmountOfPaymentsListExpanded = false
-                                }) {
-                                Text(i.toString())
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Box (modifier = Modifier.fillMaxWidth()){
+                                    Text(
+                                        i.toString(),
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                }
                             }
                         }
                     }
@@ -181,7 +192,7 @@ fun MainScreen(
             Button(
                 onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "USD")) },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (paymentDetails.currency == "USD") Color.LightGray else Color.White
+                    backgroundColor = if (paymentDetails.currency == "USD") Color.White else Color.LightGray
                 )
             ) {
                 Text("USD")
@@ -190,7 +201,7 @@ fun MainScreen(
             Button(
                 onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "ILS")) },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (paymentDetails.currency == "ILS") Color.LightGray else Color.White
+                    backgroundColor = if (paymentDetails.currency == "ILS") Color.White else Color.LightGray
                 )
             ) {
                 Text("ILS")
