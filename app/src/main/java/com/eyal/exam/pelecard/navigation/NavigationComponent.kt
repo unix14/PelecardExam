@@ -3,15 +3,19 @@ package com.eyal.exam.pelecard.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.eyal.exam.pelecard.models.NavEvent
+import com.eyal.exam.pelecard.repos.NavigationRepository
 import com.eyal.exam.pelecard.ui.main.MainScreen
+import com.eyal.exam.pelecard.ui.settings.SettingsScreen
 
 @ExperimentalMaterialApi
 @Composable
-fun NavigationComponent(navController: NavHostController, modifier: Modifier = Modifier) {
+fun NavigationComponent(navRepo: NavigationRepository, navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         startDestination = "main",
@@ -21,7 +25,7 @@ fun NavigationComponent(navController: NavHostController, modifier: Modifier = M
             MainScreen()
         }
         composable("settings") {
-//            SettingsScreen()
+            SettingsScreen()
         }
         composable("signature") {
 //            SignatureScreen()
@@ -31,6 +35,18 @@ fun NavigationComponent(navController: NavHostController, modifier: Modifier = M
         }
         composable("currencyConversion") {
 //            CurrencyConversionScreen()
+        }
+    }
+    LaunchedEffect(Unit) {
+        navRepo.navigationEvents.collect { event ->
+            when (event) {
+                is NavEvent.NavigateToMain -> navController.navigate("main")
+                is NavEvent.NavigateToSettings -> navController.navigate("settings")
+//                is NavEvent.NavigateToProfile -> {
+//                    navController.navigate("profile/${event.userId}")
+//                }
+                else -> {}
+            }
         }
     }
 }

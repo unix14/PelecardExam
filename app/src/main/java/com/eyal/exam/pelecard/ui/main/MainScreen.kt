@@ -7,12 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -21,11 +18,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
@@ -44,17 +39,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.MainActivity
 import com.eyal.exam.pelecard.composables.ActionButton
 import com.eyal.exam.pelecard.composables.AnalogClockComposable
+import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.utils.AreYouSureDialog
 
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    mainViewModel: MainViewModel = hiltViewModel()
+    mainViewModel: MainViewModel = hiltViewModel(),
 ) {
     val activity = LocalContext.current as? MainActivity
     val showExitDialog = remember { mutableStateOf(false) }
 
+    val settingsConfig by mainViewModel.settingsConfiguration.collectAsState()
     val uiState by mainViewModel.uiState.collectAsState(UiState.Idle)
     val paymentDetails by mainViewModel.paymentDetails.collectAsState()
     var isAmountOfPaymentsListExpanded by remember { mutableStateOf(false) }
@@ -77,7 +74,7 @@ fun MainScreen(
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable {
-                    //todo navigate to settings screen
+                    mainViewModel.goToSettings()
                 }
         )
 
@@ -115,113 +112,121 @@ fun MainScreen(
         )
 
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Payments:")
-            Switch(
-                checked = paymentDetails.isPayments,
-                onCheckedChange = { isPayments ->
-                    mainViewModel.updatePaymentDetails(paymentDetails.copy(isPayments = isPayments))
-                },
-                modifier = Modifier.padding(start = 8.dp)
-            )
+        // show payments only if the setting is enabled
+        if(settingsConfig?.settingsMap?.get(SettingId.PAYMENTS)?.value == true) {
+            // show payments
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Payments:")
+                Switch(
+                    checked = paymentDetails.isPayments,
+                    onCheckedChange = { isPayments ->
+                        mainViewModel.updatePaymentDetails(paymentDetails.copy(isPayments = isPayments))
+                    },
+                    modifier = Modifier.padding(start = 8.dp)
+                )
 
-            Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
 
-            if(paymentDetails.isPayments) {
-                ExposedDropdownMenuBox(
-                    expanded = isAmountOfPaymentsListExpanded,
-                    onExpandedChange = {
-                        isAmountOfPaymentsListExpanded = it
-                    },) {
-
-                    TextField(
-                        value = paymentDetails.numberOfPayments.toString(),
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = isAmountOfPaymentsListExpanded)
-                        },
-                        label = { Text("# of payments") },
-                        colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                    )
-                    ExposedDropdownMenu(
+                if(paymentDetails.isPayments) {
+                    ExposedDropdownMenuBox(
                         expanded = isAmountOfPaymentsListExpanded,
-                        onDismissRequest = {
-                            isAmountOfPaymentsListExpanded = false
-                        },
-                    ) {
-                        for (i in 1..12) {
-                            DropdownMenuItem(
-                                onClick = {
-                                    mainViewModel.updatePaymentDetails(paymentDetails.copy(numberOfPayments = i))
-                                    isAmountOfPaymentsListExpanded = false
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Box (modifier = Modifier.fillMaxWidth()){
-                                    Text(
-                                        i.toString(),
-                                        modifier = Modifier.align(Alignment.Center)
-                                    )
+                        onExpandedChange = {
+                            isAmountOfPaymentsListExpanded = it
+                        },) {
+
+                        TextField(
+                            value = paymentDetails.numberOfPayments.toString(),
+                            onValueChange = {},
+                            readOnly = true,
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isAmountOfPaymentsListExpanded)
+                            },
+                            label = { Text("# of payments") },
+                            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                        )
+                        ExposedDropdownMenu(
+                            expanded = isAmountOfPaymentsListExpanded,
+                            onDismissRequest = {
+                                isAmountOfPaymentsListExpanded = false
+                            },
+                        ) {
+                            for (i in 1..12) {
+                                DropdownMenuItem(
+                                    onClick = {
+                                        mainViewModel.updatePaymentDetails(paymentDetails.copy(numberOfPayments = i))
+                                        isAmountOfPaymentsListExpanded = false
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Box (modifier = Modifier.fillMaxWidth()){
+                                        Text(
+                                            i.toString(),
+                                            modifier = Modifier.align(Alignment.Center)
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
             }
         }
 
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text("Currency:")
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Button(
-                onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "USD")) },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (paymentDetails.currency == "USD") Color.White else Color.LightGray
-                )
+        // show currency only if the setting is enabled
+        if(settingsConfig?.settingsMap?.get(SettingId.CURRENCY)?.value == true) {
+            // show currency
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("USD")
-            }
+                Text("Currency:")
 
-            Button(
-                onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "ILS")) },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = if (paymentDetails.currency == "ILS") Color.White else Color.LightGray
-                )
-            ) {
-                Text("ILS")
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "USD")) },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (paymentDetails.currency == "USD") Color.White else Color.LightGray
+                    )
+                ) {
+                    Text("USD")
+                }
+
+                Button(
+                    onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "ILS")) },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (paymentDetails.currency == "ILS") Color.White else Color.LightGray
+                    )
+                ) {
+                    Text("ILS")
+                }
             }
         }
-
 
         
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Signature:")
-            Switch(checked = paymentDetails.isSignature, onCheckedChange = { isSignature ->
-                mainViewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
-            })
+        // show signature only if the setting is enabled
+        if(settingsConfig?.settingsMap?.get(SettingId.SIGNATURE)?.value == true) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Signature:")
+                Switch(checked = paymentDetails.isSignature, onCheckedChange = { isSignature ->
+                    mainViewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
+                })
+            }
         }
-
         Spacer(modifier = Modifier.weight(1f))
 
         Row(

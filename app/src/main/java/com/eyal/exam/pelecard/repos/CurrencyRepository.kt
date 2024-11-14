@@ -4,7 +4,9 @@ import com.eyal.exam.pelecard.abs.ApiService
 import com.eyal.exam.pelecard.models.CurrencyConversionResponse
 import com.eyal.exam.pelecard.models.CurrencyDataResponse
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CurrencyRepository @Inject constructor(
     private val apiService: ApiService
 ) {
