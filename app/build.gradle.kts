@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    kotlin("kapt")  // Kotlin KAPT for annotation processing
+    kotlin("kapt")   // Kotlin KAPT for annotation processing
     alias(libs.plugins.hilt)
 }
 
@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,6 +83,9 @@ dependencies {
     // Kotlin Coroutines
     implementation(libs.kotlinx.coroutines.android)
 
+    // For Hilt ViewModel
+    implementation(libs.androidx.hilt.navigation.compose)
+
     // For Flow support in ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -92,4 +96,8 @@ dependencies {
     // OkHttp for logging (optional but recommended for debugging)
     implementation(libs.logging.interceptor)
 
+}
+
+kapt {
+    correctErrorTypes = true // Add this block here
 }
