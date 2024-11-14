@@ -45,15 +45,15 @@ import com.eyal.exam.pelecard.utils.AreYouSureDialog
 
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(
-    mainViewModel: MainViewModel = hiltViewModel(),
+fun MainScreen( // todo think about how to reduce code from here and refactor what can be refactored
+    viewModel: MainViewModel = hiltViewModel(),
 ) {
     val activity = LocalContext.current as? MainActivity
     val showExitDialog = remember { mutableStateOf(false) }
 
-    val settingsConfig by mainViewModel.settingsConfiguration.collectAsState()
-    val uiState by mainViewModel.uiState.collectAsState(UiState.Idle)
-    val paymentDetails by mainViewModel.paymentDetails.collectAsState()
+    val settingsConfig by viewModel.settingsConfiguration.collectAsState()
+    val uiState by viewModel.uiState.collectAsState(UiState.Idle) // todo use this ??
+    val paymentDetails by viewModel.paymentDetails.collectAsState()
     var isAmountOfPaymentsListExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -74,7 +74,7 @@ fun MainScreen(
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable {
-                    mainViewModel.goToSettings()
+                    viewModel.goToSettings()
                 }
         )
 
@@ -100,10 +100,10 @@ fun MainScreen(
             singleLine = true,
             onValueChange = { newValue ->
                 if(newValue.isEmpty()) {
-                    mainViewModel.updatePaymentDetails(paymentDetails.copy(amount = 0))
+                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = 0))
                 }
                 else if(newValue.toIntOrNull() != null) {
-                    mainViewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toInt()))
+                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toInt()))
                 }
             },
             modifier = Modifier
@@ -125,7 +125,7 @@ fun MainScreen(
                 Switch(
                     checked = paymentDetails.isPayments,
                     onCheckedChange = { isPayments ->
-                        mainViewModel.updatePaymentDetails(paymentDetails.copy(isPayments = isPayments))
+                        viewModel.updatePaymentDetails(paymentDetails.copy(isPayments = isPayments))
                     },
                     modifier = Modifier.padding(start = 8.dp)
                 )
@@ -158,7 +158,7 @@ fun MainScreen(
                             for (i in 1..12) {
                                 DropdownMenuItem(
                                     onClick = {
-                                        mainViewModel.updatePaymentDetails(paymentDetails.copy(numberOfPayments = i))
+                                        viewModel.updatePaymentDetails(paymentDetails.copy(numberOfPayments = i))
                                         isAmountOfPaymentsListExpanded = false
                                     },
                                     modifier = Modifier.fillMaxWidth()
@@ -193,7 +193,7 @@ fun MainScreen(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Button(
-                    onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "USD")) },
+                    onClick = { viewModel.updatePaymentDetails(paymentDetails.copy(currency = "USD")) },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = if (paymentDetails.currency == "USD") Color.White else Color.LightGray
                     )
@@ -202,7 +202,7 @@ fun MainScreen(
                 }
 
                 Button(
-                    onClick = { mainViewModel.updatePaymentDetails(paymentDetails.copy(currency = "ILS")) },
+                    onClick = { viewModel.updatePaymentDetails(paymentDetails.copy(currency = "ILS")) },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = if (paymentDetails.currency == "ILS") Color.White else Color.LightGray
                     )
@@ -223,7 +223,7 @@ fun MainScreen(
             ) {
                 Text("Signature:")
                 Switch(checked = paymentDetails.isSignature, onCheckedChange = { isSignature ->
-                    mainViewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
+                    viewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
                 })
             }
         }
@@ -240,7 +240,7 @@ fun MainScreen(
                 color = Color.Green,
                 isEnabled = paymentDetails.amount > 0,
                 onClick = {
-                    mainViewModel.goToNextScreen()
+                    viewModel.goToNextScreen()
                 },
             )
             ActionButton(

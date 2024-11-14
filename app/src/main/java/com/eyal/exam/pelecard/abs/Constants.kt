@@ -13,9 +13,9 @@ object Constants {
     val DEFAULT_PAYMENT_DETAILS = PaymentDetails(200, true, 12, true, "USD")
     val DEFAULT_SETTINGS_CONFIG = SettingsConfig(
         mapOf(
-            SettingId.PAYMENTS to SettingsItem("Show Payments Picker", true),
-            SettingId.CURRENCY to SettingsItem("Show Currency Buttons", true),
-            SettingId.SIGNATURE to SettingsItem("Show Signature Toggle", true)
+            SettingId.PAYMENTS to SettingsItem("Allow payments", true),
+            SettingId.CURRENCY to SettingsItem("Allow currency", true),
+            SettingId.SIGNATURE to SettingsItem("Allow Signature", true)
         )
     )
 }

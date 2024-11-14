@@ -19,7 +19,7 @@ import com.eyal.exam.pelecard.utils.AreYouSureDialog
 
 @Composable
 fun SignatureScreen (
-    signatureViewModel: SignatureViewModel = hiltViewModel()
+    viewModel: SignatureViewModel = hiltViewModel()
 ) {
     val showAreYouSureDialog = remember { mutableStateOf(false) }
 
@@ -46,7 +46,7 @@ fun SignatureScreen (
                 text = "Submit",
                 color = Color.Green,
                 onClick = {
-                    signatureViewModel.goToNextScreen()
+                    viewModel.goToNextScreen()
                 },
             )
             ActionButton(
@@ -64,7 +64,7 @@ fun SignatureScreen (
             title = "Cancel Payment",
             subtitle = "Are you sure you want to cancel this payment?",
             onConfirm = {
-                signatureViewModel.goToPreviousScreen()
+                viewModel.goToPreviousScreen()
                 showAreYouSureDialog.value = false
             },
             onDismiss = {
@@ -73,5 +73,4 @@ fun SignatureScreen (
             }
         )
     }
-
 }

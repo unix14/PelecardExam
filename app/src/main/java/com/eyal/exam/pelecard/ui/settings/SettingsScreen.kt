@@ -22,9 +22,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SettingsScreen(
-    settingsViewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val settingsConfig by settingsViewModel.settingsConfiguration.collectAsState()
+    val settingsConfig by viewModel.settingsConfiguration.collectAsState()
 
     Column(
         modifier = Modifier
@@ -39,7 +39,7 @@ fun SettingsScreen(
             modifier = Modifier
                 .align(Alignment.End)
                 .clickable {
-                    settingsViewModel.navigateBack()
+                    viewModel.navigateBack()
                 }
         )
 
@@ -56,7 +56,7 @@ fun SettingsScreen(
                         val newSettingsConfig = settingsConfig!!.copy(settingsMap = settingsConfig!!.settingsMap.toMutableMap().apply {
                             this[id] = setting.copy(value = isChecked)
                         })
-                        settingsViewModel.updateSettingsConfigurations(newSettingsConfig)
+                        viewModel.updateSettingsConfigurations(newSettingsConfig)
                     },
                     modifier = Modifier.padding(start = 8.dp)
                 )
