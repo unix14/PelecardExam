@@ -240,7 +240,7 @@ fun MainScreen(
                 color = Color.Green,
                 isEnabled = paymentDetails.amount > 0,
                 onClick = {
-
+                    mainViewModel.goToNextScreen()
                 },
             )
             ActionButton(

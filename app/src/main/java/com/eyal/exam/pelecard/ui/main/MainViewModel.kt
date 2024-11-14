@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.eyal.exam.pelecard.abs.Constants
 import com.eyal.exam.pelecard.models.NavEvent
 import com.eyal.exam.pelecard.models.PaymentDetails
+import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.models.SettingsConfig
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.repos.NavigationRepository
@@ -63,9 +64,15 @@ class MainViewModel @Inject constructor(
     }
 
     fun goToNextScreen() {
-        //todo change to navigate to receipt if no signature is required
+        val nextNavEvent: NavEvent = _settingsConfiguration.value?.let {
+            if (it.settingsMap[SettingId.SIGNATURE]?.value == true) {
+                NavEvent.NavigateToSignature(paymentDetails.value)
+            } else {
+                NavEvent.NavigateToReceipt(paymentDetails.value)
+            }
+        } ?: NavEvent.NavigateToReceipt(paymentDetails.value)
         viewModelScope.launch {
-            navigationRepository.navigateTo(NavEvent.NavigateToSignature(paymentDetails.value))
+            navigationRepository.navigateTo(nextNavEvent)
         }
     }
 

@@ -11,7 +11,9 @@ import androidx.navigation.compose.composable
 import com.eyal.exam.pelecard.models.NavEvent
 import com.eyal.exam.pelecard.repos.NavigationRepository
 import com.eyal.exam.pelecard.ui.main.MainScreen
+import com.eyal.exam.pelecard.ui.receipt.ReceiptScreen
 import com.eyal.exam.pelecard.ui.settings.SettingsScreen
+import com.eyal.exam.pelecard.ui.signature.SignatureScreen
 
 @ExperimentalMaterialApi
 @Composable
@@ -28,10 +30,10 @@ fun NavigationComponent(navRepo: NavigationRepository, navController: NavHostCon
             SettingsScreen()
         }
         composable("signature") {
-//            SignatureScreen()
+            SignatureScreen()
         }
         composable("receipt") {
-//            ReceiptScreen()
+            ReceiptScreen()
         }
         composable("currencyConversion") {
 //            CurrencyConversionScreen()
@@ -42,9 +44,8 @@ fun NavigationComponent(navRepo: NavigationRepository, navController: NavHostCon
             when (event) {
                 is NavEvent.NavigateToMain -> navController.navigate("main")
                 is NavEvent.NavigateToSettings -> navController.navigate("settings")
-//                is NavEvent.NavigateToProfile -> {
-//                    navController.navigate("profile/${event.userId}")
-//                }
+                is NavEvent.NavigateToSignature -> navController.navigate("signature") // todo use nav args / options/ extras
+                is NavEvent.NavigateToReceipt -> navController.navigate("receipt") // todo use nav args / options/ extras
                 else -> {}
             }
         }
