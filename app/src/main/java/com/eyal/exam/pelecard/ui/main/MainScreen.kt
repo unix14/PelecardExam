@@ -256,7 +256,7 @@ fun MainScreen(
 
     if(showExitDialog.value) {
         AreYouSureDialog(
-            title = "Exit",
+            title = "Exit App",
             subtitle = "Are you sure you want to exit?",
             onConfirm = {
                 activity?.finish()
