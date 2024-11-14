@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -33,17 +32,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.eyal.exam.pelecard.MainActivity
+import com.eyal.exam.pelecard.composables.ActionButton
 import com.eyal.exam.pelecard.composables.AnalogClockComposable
 import com.eyal.exam.pelecard.models.UiState
+import com.eyal.exam.pelecard.utils.AreYouSureDialog
 
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
+    val activity = LocalContext.current as? MainActivity
+    val showExitDialog = remember { mutableStateOf(false) }
+
     val uiState by mainViewModel.uiState.collectAsState(UiState.Idle)
     val paymentDetails by mainViewModel.paymentDetails.collectAsState()
     var isAmountOfPaymentsListExpanded by remember { mutableStateOf(false) }
@@ -96,7 +102,10 @@ fun MainScreen(
                 else if(newValue.toIntOrNull() != null) {
                     mainViewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toInt()))
                 }
-            }, modifier = Modifier.fillMaxWidth().padding(16.dp),
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
         )
 
 
@@ -208,22 +217,39 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(
+            ActionButton(
+                text = "Submit",
+                color = Color.Green,
+                isEnabled = paymentDetails.amount > 0,
                 onClick = {
 
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)) {
-                Text("Submit", color = Color.White)
-            }
-            Button(
+            )
+            ActionButton(
+                text = "Exit",
+                color = Color.Red,
                 onClick = {
-                    //todo finish activity?
+                    showExitDialog.value = true
+
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red)) {
-                Text("Exit", color = Color.White)
-            }
+            )
         }
+    }
+
+    if(showExitDialog.value) {
+        AreYouSureDialog(
+            title = "Exit",
+            subtitle = "Are you sure you want to exit?",
+            onConfirm = {
+                activity?.finish()
+                showExitDialog.value = false
+            },
+            onDismiss = {
+                // do nothing
+                showExitDialog.value = false
+            }
+        )
     }
 }
