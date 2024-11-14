@@ -15,7 +15,7 @@ object Constants {
         mapOf(
             SettingId.PAYMENTS to SettingsItem("Allow payments", true),
             SettingId.CURRENCY to SettingsItem("Allow currency", true),
-            SettingId.SIGNATURE to SettingsItem("Allow Signature", true)
+            SettingId.SIGNATURE to SettingsItem("Allow signature", true)
         )
     )
 }

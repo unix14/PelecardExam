@@ -176,6 +176,8 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                     }
                 }
             }
+        } else {
+            viewModel.updatePaymentDetails(paymentDetails.copy(isPayments = false))
         }
 
         // show currency only if the setting is enabled
@@ -210,6 +212,8 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                     Text("ILS")
                 }
             }
+        } else {
+            viewModel.updatePaymentDetails(paymentDetails.copy(currency = ""))
         }
 
         
@@ -226,6 +230,8 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                     viewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
                 })
             }
+        } else {
+            viewModel.updatePaymentDetails(paymentDetails.copy(isSignature = false))
         }
         Spacer(modifier = Modifier.weight(1f))
 
