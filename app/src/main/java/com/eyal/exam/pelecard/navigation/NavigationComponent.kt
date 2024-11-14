@@ -1,6 +1,7 @@
 package com.eyal.exam.pelecard.navigation
 
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -8,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.eyal.exam.pelecard.ui.main.MainScreen
 
+@ExperimentalMaterialApi
 @Composable
 fun NavigationComponent(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(

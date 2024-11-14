@@ -28,7 +28,7 @@ class MainViewModel @Inject constructor(
 
     //----------------- Payment Details -----------------
     private val _paymentDetails = MutableStateFlow<PaymentDetails>(
-        PaymentDetails(200.0, true, 12, true, "USD")
+        PaymentDetails(200, true, 12, true, "USD")
     )
     val paymentDetails: StateFlow<PaymentDetails> get() = _paymentDetails
 

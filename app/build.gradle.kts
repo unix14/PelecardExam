@@ -96,6 +96,10 @@ dependencies {
     // OkHttp for logging (optional but recommended for debugging)
     implementation(libs.logging.interceptor)
 
+
+    // Icons for Material
+    implementation(libs.androidx.material.icons.extended)
+
 }
 
 kapt {
