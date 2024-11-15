@@ -22,8 +22,10 @@ import com.eyal.exam.pelecard.composables.ReceiptDetail
 import com.eyal.exam.pelecard.composables.SignaturePreview
 import com.eyal.exam.pelecard.models.PaymentDetails
 import com.eyal.exam.pelecard.models.UiState
+import com.eyal.exam.pelecard.utils.getNumberFormat
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
+import java.text.DecimalFormat
 
 @Composable
 fun ReceiptScreen (
@@ -37,16 +39,16 @@ fun ReceiptScreen (
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             Text("Receipt", fontSize = 22.sp)
-            /// todo add the receipt details
-            ReceiptDetail(key = "Amount:", value = paymentDetails?.amount.toString())
+            ReceiptDetail(key = "Amount:", value = getNumberFormat(paymentDetails?.amount ?: 0))
             if(paymentDetails?.isPayments == true) {
                 ReceiptDetail(
                     key = "Payments:",
-                    value = (paymentDetails.numberOfPayments ?: 1).toString()
+                    value = paymentDetails.numberOfPayments.toString()
                 )
             }
             if(paymentDetails?.currency?.isNotEmpty() == true) {
@@ -54,9 +56,9 @@ fun ReceiptScreen (
             }
 
             if(paymentDetails?.isSignature == true) {
-                Text("Signature:", fontSize = 18.sp)
+                Text("Signature:", fontSize = 18.sp, modifier = Modifier.padding(top= 20.dp))
                 val filePathString = URLDecoder.decode(paymentDetails.signatureFilePath, StandardCharsets.UTF_8.toString())
-                SignaturePreview(filePath = filePathString)
+                SignaturePreview(filePath = filePathString, modifier = Modifier.padding(top= 20.dp))
             }
 
             Spacer(modifier = Modifier.weight(1f))

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
@@ -34,6 +35,7 @@ fun SignatureScreen (
     paymentDetails: PaymentDetails?,
     viewModel: SignatureViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val showAreYouSureDialog = remember { mutableStateOf(false) }
     val didStartedSigning = remember { mutableStateOf(false) }
     var _savedOffsets = remember<SnapshotStateList<Offset>?> { null }
@@ -41,17 +43,16 @@ fun SignatureScreen (
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "Please sign below",
             modifier = Modifier.padding(16.dp)
         )
-        /// todo add signature view
-        val context = LocalContext.current
 
         SignaturePad(
             onCanvasChanged = { points, density ->

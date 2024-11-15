@@ -42,6 +42,8 @@ import com.eyal.exam.pelecard.composables.AnalogClockComposable
 import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.utils.AreYouSureDialog
+import com.eyal.exam.pelecard.utils.getNumberFormat
+import java.text.DecimalFormat
 
 @ExperimentalMaterialApi
 @Composable
@@ -89,7 +91,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
 
         TextField(
             value = if(paymentDetails.amount != 0) {
-                paymentDetails.amount.toString()
+                getNumberFormat(paymentDetails.amount)
             } else "",
             isError = paymentDetails.amount <= 0,
             label = { Text("Amount") },
@@ -99,11 +101,16 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
             ),
             singleLine = true,
             onValueChange = { newValue ->
-                if(newValue.isEmpty()) {
+                // Remove commas from the input before parsing
+                val sanitizedValue = newValue.replace(",", "")
+
+                // Parse the sanitized value as an integer
+                val parsedValue = sanitizedValue.toIntOrNull()
+
+                if (parsedValue != null) {
+                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = parsedValue))
+                } else if (sanitizedValue.isEmpty()) {
                     viewModel.updatePaymentDetails(paymentDetails.copy(amount = 0))
-                }
-                else if(newValue.toIntOrNull() != null) {
-                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toInt()))
                 }
             },
             modifier = Modifier

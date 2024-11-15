@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -25,7 +26,7 @@ fun SignaturePad(modifier: Modifier = Modifier, onCanvasChanged: (SnapshotStateL
     val points = remember { mutableStateListOf<Offset>() }
     val density = LocalDensity.current
 
-    Box(modifier = modifier.fillMaxWidth().height(150.dp).background(Color.White).border(2.dp, Color.Black)) {
+    Box(modifier = modifier.width(330.dp).height(180.dp).background(Color.White).border(2.dp, Color.Black)) {
         Canvas(modifier = modifier
             .fillMaxSize()
             .pointerInput(Unit) {
