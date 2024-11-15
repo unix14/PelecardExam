@@ -13,6 +13,14 @@ import javax.inject.Inject
 class SignatureViewModel @Inject constructor(
     private val navigationRepository: NavigationRepository
 ) : ViewModel() {
+
+
+    fun saveSignature() {
+        // todo implement
+
+    }
+
+
     fun goToNextScreen(paymentDetails: PaymentDetails) {
         viewModelScope.launch {
             navigationRepository.navigateTo(NavEvent.NavigateToReceipt(paymentDetails)) // todo use the paymentDetails

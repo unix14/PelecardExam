@@ -91,7 +91,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
 
         TextField(
             value = if(paymentDetails.amount != 0) {
-                getNumberFormat(paymentDetails.amount)
+                getNumberFormat(paymentDetails.amount) // todo remove this since it cause typing bugs
             } else "",
             isError = paymentDetails.amount <= 0,
             label = { Text("Amount") },
