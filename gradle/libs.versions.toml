@@ -1,6 +1,7 @@
 [versions]
 activityCompose = "1.9.3"
 agp = "8.3.2"
+coilCompose = "2.0.0"
 compiler = "1.5.15"
 composeVersion = "1.7.5"
 converterGson = "2.9.0"
@@ -36,6 +37,7 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "composeVersion" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "composeVersion" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "composeVersion" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

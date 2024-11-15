@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,8 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.composables.ActionButton
 import com.eyal.exam.pelecard.composables.ReceiptDetail
+import com.eyal.exam.pelecard.composables.SignaturePreview
 import com.eyal.exam.pelecard.models.PaymentDetails
 import com.eyal.exam.pelecard.models.UiState
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun ReceiptScreen (
@@ -44,16 +46,17 @@ fun ReceiptScreen (
             if(paymentDetails?.isPayments == true) {
                 ReceiptDetail(
                     key = "Payments:",
-                    value = (paymentDetails?.numberOfPayments ?: 1).toString()
+                    value = (paymentDetails.numberOfPayments ?: 1).toString()
                 )
             }
             if(paymentDetails?.currency?.isNotEmpty() == true) {
-                ReceiptDetail(key = "Currency:", value = paymentDetails.currency ?: "")
+                ReceiptDetail(key = "Currency:", value = paymentDetails.currency)
             }
 
             if(paymentDetails?.isSignature == true) {
                 Text("Signature:", fontSize = 18.sp)
-                /// todo add signature view
+                val filePathString = URLDecoder.decode(paymentDetails.signatureFilePath, StandardCharsets.UTF_8.toString())
+                SignaturePreview(filePath = filePathString)
             }
 
             Spacer(modifier = Modifier.weight(1f))

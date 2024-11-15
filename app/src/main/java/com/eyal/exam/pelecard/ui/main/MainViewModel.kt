@@ -64,13 +64,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun goToNextScreen() {
-        val nextNavEvent: NavEvent = _settingsConfiguration.value?.let {
-            if (it.settingsMap[SettingId.SIGNATURE]?.value == true) {
+        val nextNavEvent: NavEvent = _paymentDetails.value.let {
+            if (it.isSignature) {
                 NavEvent.NavigateToSignature(paymentDetails.value)
             } else {
                 NavEvent.NavigateToReceipt(paymentDetails.value)
             }
-        } ?: NavEvent.NavigateToReceipt(paymentDetails.value)
+        }
         viewModelScope.launch {
             navigationRepository.navigateTo(nextNavEvent)
         }

@@ -100,6 +100,8 @@ dependencies {
     // Icons for Material
     implementation(libs.androidx.material.icons.extended)
 
+    // Coil for Signature viewing
+    implementation(libs.coil.compose)
 }
 
 kapt {

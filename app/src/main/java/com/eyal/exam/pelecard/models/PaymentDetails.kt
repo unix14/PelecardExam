@@ -6,4 +6,5 @@ data class PaymentDetails(
     val numberOfPayments: Int,
     val isSignature: Boolean,
     val currency: String,
+    val signatureFilePath: String? = null,
 )

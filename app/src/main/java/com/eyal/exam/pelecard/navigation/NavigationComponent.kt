@@ -49,7 +49,6 @@ fun NavigationComponent(navRepo: NavigationRepository, navController: NavHostCon
             arguments = listOf(navArgument("paymentDetails") { type = NavType.StringType })
         ) { backStackEntry ->
             val paymentDetailsJson = backStackEntry.arguments?.getString("paymentDetails")
-            Log.d("wow", paymentDetailsJson ?: "Null JSON data")
             val paymentDetails = paymentDetailsJson?.let { json ->
                 // Convert JSON string back to PaymentDetails object
                 gson.fromJson(paymentDetailsJson, PaymentDetails::class.java)
