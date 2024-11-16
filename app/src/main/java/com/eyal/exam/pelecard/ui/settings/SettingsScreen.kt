@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -33,15 +35,27 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = "Back Icon",
-            modifier = Modifier
-                .align(Alignment.End)
-                .clickable {
-                    viewModel.navigateBack()
-                }
-        )
+        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween) { // todo extract TO app bar widget
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Text(
+                text = "Settings",
+                style = MaterialTheme.typography.h6,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = "Back Icon",
+                modifier = Modifier
+                    .align(Alignment.Bottom)
+                    .clickable {
+                        viewModel.navigateBack()
+                    }
+            )
+        }
+
 
         settingsConfig?.settingsMap?.forEach { (id, setting) ->
             Row(

@@ -1,6 +1,7 @@
 package com.eyal.exam.pelecard.abs
 
 import com.eyal.exam.pelecard.models.PaymentDetails
+import com.eyal.exam.pelecard.models.RouteName
 import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.models.SettingsConfig
 import com.eyal.exam.pelecard.models.SettingsItem
@@ -18,4 +19,10 @@ object Constants {
             SettingId.SIGNATURE to SettingsItem("Allow signature", true)
         )
     )
+    const val DEFAULT_CURRENCY = "USD"
+
+    /// navigation Params
+    val DEFAULT_STARTING_ROUTE_NAME = RouteName.MAIN.name.lowercase()
+    const val NAV_PARAM_PAYMENT_DETAILS = "paymentDetails"
+    const val NAV_PARAM_CONVERSION_SCREEN_PARAMS = "conversionScreenParams"
 }

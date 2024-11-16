@@ -22,6 +22,7 @@ import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,15 +36,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.MainActivity
 import com.eyal.exam.pelecard.composables.ActionButton
 import com.eyal.exam.pelecard.composables.AnalogClockComposable
+import com.eyal.exam.pelecard.composables.CurrencyPicker
 import com.eyal.exam.pelecard.models.SettingId
-import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.utils.AreYouSureDialog
-import com.eyal.exam.pelecard.utils.getNumberFormat
-import java.text.DecimalFormat
 
 @ExperimentalMaterialApi
 @Composable
@@ -51,10 +51,9 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
     viewModel: MainViewModel = hiltViewModel(),
 ) {
     val activity = LocalContext.current as? MainActivity
-    val showExitDialog = remember { mutableStateOf(false) }
+    var showExitDialog by remember { mutableStateOf(false) }
 
     val settingsConfig by viewModel.settingsConfiguration.collectAsState()
-    val uiState by viewModel.uiState.collectAsState(UiState.Idle) // todo use this ??
     val paymentDetails by viewModel.paymentDetails.collectAsState()
     var isAmountOfPaymentsListExpanded by remember { mutableStateOf(false) }
 
@@ -65,20 +64,29 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-//        Text(text = uiState.toString())
-//        Button(onClick = { mainViewModel.fetchConversionRate("ILS") }) {
-//            Text("Fetch Data")
-//        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
-        Icon(
-            imageVector = Icons.Outlined.Settings,
-            contentDescription = "Settings Icon",
-            modifier = Modifier
-                .align(Alignment.End)
-                .clickable {
-                    viewModel.goToSettings()
-                }
-        )
+            Icon(
+                imageVector = Icons.Outlined.Info,
+                contentDescription = "Information Icon",
+                modifier = Modifier
+                    .align(Alignment.Top)
+                    .clickable {
+                        viewModel.goToInfo()
+                    }
+            )
+            Text("Menu", fontSize = 24.sp)
+
+            Icon(
+                imageVector = Icons.Outlined.Settings,
+                contentDescription = "Settings Icon",
+                modifier = Modifier
+                    .align(Alignment.Bottom)
+                    .clickable {
+                        viewModel.goToSettings()
+                    }
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -91,7 +99,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
 
         TextField(
             value = if(paymentDetails.amount != 0) {
-                getNumberFormat(paymentDetails.amount) // todo remove this since it cause typing bugs
+                paymentDetails.amount.toString()
             } else "",
             isError = paymentDetails.amount <= 0,
             label = { Text("Amount") },
@@ -101,16 +109,11 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
             ),
             singleLine = true,
             onValueChange = { newValue ->
-                // Remove commas from the input before parsing
-                val sanitizedValue = newValue.replace(",", "")
-
-                // Parse the sanitized value as an integer
-                val parsedValue = sanitizedValue.toIntOrNull()
-
-                if (parsedValue != null) {
-                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = parsedValue))
-                } else if (sanitizedValue.isEmpty()) {
+                if(newValue.isEmpty()) {
                     viewModel.updatePaymentDetails(paymentDetails.copy(amount = 0))
+                }
+                else if(newValue.toIntOrNull() != null) {
+                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toInt()))
                 }
             },
             modifier = Modifier
@@ -183,8 +186,6 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                     }
                 }
             }
-        } else {
-            viewModel.updatePaymentDetails(paymentDetails.copy(isPayments = false))
         }
 
         // show currency only if the setting is enabled
@@ -201,28 +202,14 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Button(
-                    onClick = { viewModel.updatePaymentDetails(paymentDetails.copy(currency = "USD")) },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (paymentDetails.currency == "USD") Color.White else Color.LightGray
-                    )
-                ) {
-                    Text("USD")
-                }
-
-                Button(
-                    onClick = { viewModel.updatePaymentDetails(paymentDetails.copy(currency = "ILS")) },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (paymentDetails.currency == "ILS") Color.White else Color.LightGray
-                    )
-                ) {
-                    Text("ILS")
-                }
+                CurrencyPicker(
+                    currency = paymentDetails.currency,
+                    onCurrencySelected = { newCurrency ->
+                        viewModel.updatePaymentDetails(paymentDetails.copy(currency = newCurrency))
+                    }
+                )
             }
-        } else {
-            viewModel.updatePaymentDetails(paymentDetails.copy(currency = ""))
         }
-
         
         // show signature only if the setting is enabled
         if(settingsConfig?.settingsMap?.get(SettingId.SIGNATURE)?.value == true) {
@@ -237,8 +224,6 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                     viewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
                 })
             }
-        } else {
-            viewModel.updatePaymentDetails(paymentDetails.copy(isSignature = false))
         }
         Spacer(modifier = Modifier.weight(1f))
 
@@ -260,25 +245,24 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                 text = "Exit",
                 color = Color.Red,
                 onClick = {
-                    showExitDialog.value = true
+                    showExitDialog = true
 
                 },
             )
         }
     }
 
-    if(showExitDialog.value) {
-        AreYouSureDialog(
-            title = "Exit App",
-            subtitle = "Are you sure you want to exit?",
-            onConfirm = {
-                activity?.finish()
-                showExitDialog.value = false
-            },
-            onDismiss = {
-                // do nothing
-                showExitDialog.value = false
-            }
-        )
-    }
+    AreYouSureDialog(
+        title = "Exit App",
+        subtitle = "Are you sure you want to exit this Exam App for Pelecard ?",
+        onConfirm = {
+            activity?.finish()
+            showExitDialog = false
+        },
+        onDismiss = {
+            // do nothing
+            showExitDialog = false
+        },
+        enabled = showExitDialog
+    )
 }

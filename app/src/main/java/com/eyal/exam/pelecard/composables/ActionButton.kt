@@ -12,9 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActionButton(text: String, color: Color, isEnabled: Boolean = true, onClick: () -> Unit) {
+fun ActionButton(text: String, color: Color, isEnabled: Boolean = true, onClick: () -> Unit, modifier: Modifier = Modifier) {
     // Consistent button style
-    val buttonModifier = Modifier
+    val buttonModifier = modifier
         .width(180.dp)
         .height(65.dp)
         .padding(8.dp)

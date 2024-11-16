@@ -23,7 +23,7 @@ class SignatureViewModel @Inject constructor(
 
     fun goToNextScreen(paymentDetails: PaymentDetails) {
         viewModelScope.launch {
-            navigationRepository.navigateTo(NavEvent.NavigateToReceipt(paymentDetails)) // todo use the paymentDetails
+            navigationRepository.navigateTo(NavEvent.NavigateToReceipt(paymentDetails))
         }
     }
 

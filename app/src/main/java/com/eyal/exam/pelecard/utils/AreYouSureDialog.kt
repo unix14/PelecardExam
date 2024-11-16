@@ -9,22 +9,33 @@ import androidx.compose.runtime.Composable
 fun AreYouSureDialog(
     title: String,
     subtitle: String,
+    positiveText: String = "Yes",
+    negativeText: String = "No",
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    enabled: Boolean = true,
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(title) },
-        text = { Text(subtitle) },
-        confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text("Yes")
+    var isDialogShowing = enabled
+    if(isDialogShowing) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(title) },
+            text = { Text(subtitle) },
+            confirmButton = {
+                TextButton(onClick = {
+                    onConfirm()
+                    isDialogShowing = false
+                }) {
+                    Text(positiveText)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    onDismiss()
+                    isDialogShowing = false
+                }) {
+                    Text(negativeText)
+                }
             }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("No")
-            }
-        }
-    )
-}
+        )
+    }}

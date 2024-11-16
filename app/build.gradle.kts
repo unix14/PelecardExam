@@ -91,7 +91,7 @@ dependencies {
 
     // Retrofit dependencies
     implementation(libs.retrofit)
-    implementation(libs.converter.gson) // or any other converter depending on your data format (e.g., Moshi)
+    implementation(libs.converter.gson)
 
     // OkHttp for logging (optional but recommended for debugging)
     implementation(libs.logging.interceptor)
@@ -102,6 +102,9 @@ dependencies {
 
     // Coil for Signature viewing
     implementation(libs.coil.compose)
+
+    // Lottie Animations
+    implementation(libs.lottie.compose)
 }
 
 kapt {

@@ -1,5 +1,6 @@
 package com.eyal.exam.pelecard.ui.signature
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,14 +35,14 @@ import java.nio.charset.StandardCharsets
 
 @Composable
 fun SignatureScreen (
-    paymentDetails: PaymentDetails?,
+    paymentDetails: PaymentDetails,
     viewModel: SignatureViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val showAreYouSureDialog = remember { mutableStateOf(false) }
+    var showAreYouSureDialog by remember { mutableStateOf(false) }
     val didStartedSigning = remember { mutableStateOf(false) }
-    var _savedOffsets = remember<SnapshotStateList<Offset>?> { null }
-    var _savedDensity = remember<Density?>{ null }
+    var savedOffsets = remember<SnapshotStateList<Offset>?> { null }
+    var savedDensity = remember<Density?>{ null }
 
     Column(
         modifier = Modifier
@@ -57,8 +60,8 @@ fun SignatureScreen (
         SignaturePad(
             onCanvasChanged = { points, density ->
                 didStartedSigning.value = true
-                _savedOffsets = points
-                _savedDensity = density
+                savedOffsets = points
+                savedDensity = density
             }
         )
 
@@ -74,24 +77,19 @@ fun SignatureScreen (
                 text = "Submit",
                 color = Color.Green,
                 onClick = {
-                    if(didStartedSigning.value && _savedOffsets != null && _savedDensity != null) {
+                    if(didStartedSigning.value && savedOffsets != null && savedDensity != null) {
 
-                        ///todo move this code to ViewModel
+                        ///todo move this code to ViewModel // todo use ui state for saving the file + pb lottie
                         // Capture the signature as an image
-                        val bitmap = SignatureHelper.captureSignatureAsBitmap(_savedOffsets!!, _savedDensity!!)
-                        val file = saveBitmapToFile(context, bitmap, "signature")
-
-                        // Now you have the signature saved in a file. Use it as needed.
-                        Toast.makeText(context, "Signature saved to ${file.absolutePath}", Toast.LENGTH_SHORT).show()
+                        val bitmap = SignatureHelper.captureSignatureAsBitmap(savedOffsets!!, savedDensity!!)
+                        val file = saveBitmapToFile(context, bitmap, "signature_") // todo create unique file name to be saved
 
                         val newFilePath = URLEncoder.encode(file.absolutePath, StandardCharsets.UTF_8.toString())
-                        val newPaymentDetails = paymentDetails?.copy(signatureFilePath = newFilePath)
+                        val newPaymentDetails = paymentDetails.copy(signatureFilePath = newFilePath)
 
-                        newPaymentDetails?.let {
-                            viewModel.goToNextScreen(newPaymentDetails)
-                        } ?: {
-                            Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
-                        }
+                        Log.d("wow", "SignatureScreen: Encoded String is $newFilePath")
+
+                        viewModel.goToNextScreen(newPaymentDetails)
                     } else {
                         Toast.makeText(context, "Please sign first", Toast.LENGTH_SHORT).show()
                     }
@@ -101,24 +99,25 @@ fun SignatureScreen (
                 text = "Cancel",
                 color = Color.Red,
                 onClick = {
-                    showAreYouSureDialog.value = true
+                    showAreYouSureDialog = true
                 },
             )
         }
     }
 
-    if(showAreYouSureDialog.value) {
-        AreYouSureDialog(
-            title = "Cancel Payment",
-            subtitle = "Are you sure you want to cancel this payment?",
-            onConfirm = {
-                viewModel.goToPreviousScreen()
-                showAreYouSureDialog.value = false
-            },
-            onDismiss = {
-                // do nothing
-                showAreYouSureDialog.value = false
-            }
-        )
-    }
+    AreYouSureDialog(
+        title = "Cancel Payment",
+        subtitle = "Are you sure you want to cancel this payment?",
+        positiveText = "Cancel Payment",
+        negativeText = "Let's Sign",
+        enabled = showAreYouSureDialog,
+        onConfirm = {
+            viewModel.goToPreviousScreen()
+            showAreYouSureDialog = false
+        },
+        onDismiss = {
+            // do nothing
+            showAreYouSureDialog = false
+        }
+    )
 }

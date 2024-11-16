@@ -2,7 +2,9 @@ package com.eyal.exam.pelecard.ui.receipt
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eyal.exam.pelecard.models.ConversionScreenParams
 import com.eyal.exam.pelecard.models.NavEvent
+import com.eyal.exam.pelecard.models.PaymentDetails
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.repos.NavigationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,12 +33,19 @@ class ReceiptViewModel @Inject constructor(
         }
     }
 
-    fun goToMainScreen() {
+    private fun goToMainScreen() {
         viewModelScope.launch {
             navigationRepository.navigateTo(NavEvent.NavigateToMain)
         }
     }
 
-
-
+    fun onConvertClicked(paymentDetails: PaymentDetails) {
+        viewModelScope.launch {
+            navigationRepository.navigateTo(NavEvent.NavigateToConversion(
+                ConversionScreenParams(
+                amount = paymentDetails.amount,
+                currency = paymentDetails.currency
+            )))
+        }
+    }
 }

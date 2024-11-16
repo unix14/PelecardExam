@@ -2,7 +2,7 @@ package com.eyal.exam.pelecard.models
 
 import com.google.gson.annotations.SerializedName
 
-data class CurrencyData(
+data class CurrencyData(//delete if useless
     val code: String,
     val name: String,
     val symbol: String,

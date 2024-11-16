@@ -29,7 +29,7 @@ import java.text.DecimalFormat
 
 @Composable
 fun ReceiptScreen (
-    paymentDetails: PaymentDetails?,
+    paymentDetails: PaymentDetails,
     viewModel: ReceiptViewModel = hiltViewModel()
 ) {
     // todo use ui state
@@ -44,18 +44,18 @@ fun ReceiptScreen (
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Text("Receipt", fontSize = 22.sp)
-            ReceiptDetail(key = "Amount:", value = getNumberFormat(paymentDetails?.amount ?: 0))
-            if(paymentDetails?.isPayments == true) {
+            ReceiptDetail(key = "Amount:", value = getNumberFormat(paymentDetails.amount))
+            if(paymentDetails.isPayments) {
                 ReceiptDetail(
                     key = "Payments:",
                     value = paymentDetails.numberOfPayments.toString()
                 )
             }
-            if(paymentDetails?.currency?.isNotEmpty() == true) {
+            if(paymentDetails.currency.isNotEmpty()) {
                 ReceiptDetail(key = "Currency:", value = paymentDetails.currency)
             }
 
-            if(paymentDetails?.isSignature == true) {
+            if(paymentDetails.isSignature) {
                 Text("Signature:", fontSize = 18.sp, modifier = Modifier.padding(top= 20.dp))
                 val filePathString = URLDecoder.decode(paymentDetails.signatureFilePath, StandardCharsets.UTF_8.toString())
                 SignaturePreview(filePath = filePathString, modifier = Modifier.padding(top= 20.dp))
@@ -63,19 +63,21 @@ fun ReceiptScreen (
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                ActionButton(
-                    text = "Finish",
-                    color = Color.Green,
-                    onClick = {
-                        viewModel.onFinishedClicked()
-                    },
-                )
-            }
+        ActionButton(
+            text = "Convert",
+            color = Color.Cyan,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = {
+                viewModel.onConvertClicked(paymentDetails)
+            },
+        )
+        ActionButton(
+            text = "Finish",
+            color = Color.Green,
+            modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally),
+            onClick = {
+                viewModel.onFinishedClicked()
+            },
+        )
     }
 }
