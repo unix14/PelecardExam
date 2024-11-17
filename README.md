@@ -24,7 +24,7 @@ The **PelecardExam** project is a comprehensive implementation focused on handli
 │   ├── di
 │   ├── data
 │   ├── model
-│   └── utils
+│   └── helpers
 ```
 
 - **MainActivity**: Entry point for the app, utilizing Jetpack Compose for the UI.
@@ -33,7 +33,13 @@ The **PelecardExam** project is a comprehensive implementation focused on handli
 - **di**: Dependency injection setup using Hilt.
 - **data**: Handles data models and remote/local data sources.
 - **model**: Defines the domain models used across the app.
-- **utils**: Utility classes and helper functions.
+- **helpers**: Contains utility classes and helper functions to support various operations.
+
+## 🏢 About the Project
+
+This project is designed for **Pelecard**, a company specializing in payment solutions.
+
+The implementation showcases a professional, secure, and scalable approach to handling payment transactions. It demonstrates best practices in Android development, focusing on efficient architecture and maintainable code, aimed at integrating seamlessly into Pelecard's payment SDK systems.
 
 ## ⚙️ Getting Started
 
