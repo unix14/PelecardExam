@@ -124,7 +124,7 @@ fun NavigationComponent(
 
     AreYouSureDialog(
         title = "Exit Dialog",
-        subtitle = "Are you sure you want to exit ${getReadableRouteName(currentRoute) ?: "this"} screen?",
+        subtitle = "Are you sure you want to exit ${currentRoute.getReadableRouteName()} screen?",
         positiveText = "Exit",
         negativeText = "Cancel",
         enabled = showExitDialog,

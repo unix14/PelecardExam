@@ -13,7 +13,8 @@ fun Double.getNumberFormat() : String {
 }
 
 // Messy to read at first, but it refactors text like this "RECEIPT/{PAYMENTDETAILS}" into "Receipt"
-fun getReadableRouteName(routeName: String?) : String? { // todo remove this function
+fun String?.getReadableRouteName(): String {
+    val routeName = this
     (routeName?.indexOf('/') ?: -1).let { indexOfSlash->
         return routeName?.replaceFirstChar {
             // Capitalize only the first char
@@ -24,7 +25,7 @@ fun getReadableRouteName(routeName: String?) : String? { // todo remove this fun
             if(this != null && indexOfSlash > -1){
                 // we found a slash for parameters
                 this.substring(0, indexOfSlash)
-            } else this
+            } else this?: "this"
         }
     }
 }
