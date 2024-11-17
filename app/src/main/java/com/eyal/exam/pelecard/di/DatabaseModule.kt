@@ -18,11 +18,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun providePaymentDatabase(@ApplicationContext context: Context): PaymentDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext,
-            PaymentDatabase::class.java,
-            "payment_database"
-        ).build()
+        return PaymentDatabase.getDatabase(context)
     }
 
     @Provides

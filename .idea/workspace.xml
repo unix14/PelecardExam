@@ -17,10 +17,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2aea9e8-7470-4967-8409-eca6cdafbfaf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/migrations/Migrations.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.4/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/helpers/DoubleExtensions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/helpers/GeneralExtensions.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/navigation/NavigationComponent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/navigation/NavigationComponent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/database/PaymentDatabase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/database/PaymentDatabase.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/entities/PaymentDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/entities/PaymentDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/receipt/ReceiptScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/receipt/ReceiptScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/receipt/ReceiptViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/receipt/ReceiptViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,8 +50,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Enum" />
-        <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -83,6 +93,7 @@
       <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard\ui\receipt" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard\data\migrations" />
       <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard" />
       <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard\ui\common_ui" />
       <recent name="F:\projects\PelecardExam\app\src\main\res\raw" />

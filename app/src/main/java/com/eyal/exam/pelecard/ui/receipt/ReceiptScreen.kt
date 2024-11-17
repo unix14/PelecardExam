@@ -83,7 +83,7 @@ fun ReceiptScreen (
                         color = Color.Green,
                         modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally),
                         onClick = {
-                            viewModel.onFinishedClicked()
+                            viewModel.onFinishedClicked(paymentDetails)
                         },
                     )
                 }

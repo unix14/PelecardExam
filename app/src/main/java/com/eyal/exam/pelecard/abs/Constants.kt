@@ -24,11 +24,6 @@ object Constants {
     /// navigation Params
     val DEFAULT_STARTING_ROUTE_NAME = RouteName.MAIN.name.lowercase()
 
-
-
-    ///todo remove these params
-    const val NAV_PARAM_CONVERSION_SCREEN_PARAMS = "conversionScreenParams"
-
     const val NAV_PARAM_PAYMENT_ID = "paymentID"
     const val NAV_PARAM_CONVERSION_AMOUNT = "amount"
     const val NAV_PARAM_CONVERSION_CURRENCY = "currency"

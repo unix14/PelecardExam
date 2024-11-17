@@ -36,9 +36,11 @@ class ReceiptViewModel @Inject constructor(
         }
     }
 
-    fun onFinishedClicked() = with(viewModelScope) {
+    fun onFinishedClicked(paymentDetails: PaymentDetails) = with(viewModelScope) {
         launch {
             _uiState.emit(UiState.Loading)
+            val newPaymentDetails = paymentDetails.copy(isCompleted= true)
+            paymentRepository.updatePaymentDetails(newPaymentDetails)
             delay(1250) // for convenient loading animation
             goToMainScreen()
             _uiState.emit(UiState.Idle)

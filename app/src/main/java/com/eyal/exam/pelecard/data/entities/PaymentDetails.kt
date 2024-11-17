@@ -15,5 +15,6 @@ data class PaymentDetails(
     val isSignature: Boolean,
     val currency: String,
     val signatureFilePath: String? = null,
-    //todo bool is completed
+
+    val isCompleted: Boolean = false
 )
