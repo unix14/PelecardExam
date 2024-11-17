@@ -13,6 +13,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,9 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.eyal.exam.pelecard.composables.LottieProgressBar
-import com.eyal.exam.pelecard.models.StatusDataResponse
+import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
 import com.eyal.exam.pelecard.models.UiState
+import com.eyal.exam.pelecard.network.StatusDataResponse
+import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
 
 @Composable
 fun InfoScreen(
@@ -37,28 +40,13 @@ fun InfoScreen(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-
-        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = "Information",
-                style = MaterialTheme.typography.h6,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = "Back Icon",
-                modifier = Modifier
-                    .align(Alignment.Bottom)
-                    .clickable {
-                        viewModel.navigateBack()
-                    }
-            )
-        }
-
+        PeleAppBar("Information",
+            rightIcon = Icons.AutoMirrored.Filled.ArrowForward,
+            rightButtonDescription = "Back Icon",
+            onRightClick = {
+                viewModel.navigateBack()
+            }
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 

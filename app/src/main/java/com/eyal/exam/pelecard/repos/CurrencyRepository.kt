@@ -1,9 +1,9 @@
 package com.eyal.exam.pelecard.repos
 
-import com.eyal.exam.pelecard.abs.ApiService
-import com.eyal.exam.pelecard.models.CurrencyConversionResponse
-import com.eyal.exam.pelecard.models.CurrencyDataResponse
-import com.eyal.exam.pelecard.models.StatusDataResponse
+import com.eyal.exam.pelecard.network.ApiService
+import com.eyal.exam.pelecard.network.CurrencyConversionResponse
+import com.eyal.exam.pelecard.network.CurrencyDataResponse
+import com.eyal.exam.pelecard.network.StatusDataResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,6 +1,5 @@
 package com.eyal.exam.pelecard.ui.signature
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,25 +24,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.eyal.exam.pelecard.composables.ActionButton
-import com.eyal.exam.pelecard.composables.SignaturePad
-import com.eyal.exam.pelecard.models.PaymentDetails
-import com.eyal.exam.pelecard.utils.AreYouSureDialog
-import com.eyal.exam.pelecard.utils.SignatureHelper
-import com.eyal.exam.pelecard.utils.SignatureHelper.Companion.saveBitmapToFile
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+import com.eyal.exam.pelecard.models.UiState
+import com.eyal.exam.pelecard.ui.common_ui.ActionButton
+import com.eyal.exam.pelecard.ui.common_ui.AreYouSureDialog
+import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
+import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
+import com.eyal.exam.pelecard.ui.common_ui.SignaturePad
 
 @Composable
-fun SignatureScreen (
-    paymentDetails: PaymentDetails,
+fun SignatureScreen(
+    paymentId: Int,
     viewModel: SignatureViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsState(UiState.Idle)
     var showAreYouSureDialog by remember { mutableStateOf(false) }
     val didStartedSigning = remember { mutableStateOf(false) }
     var savedOffsets = remember<SnapshotStateList<Offset>?> { null }
-    var savedDensity = remember<Density?>{ null }
+    var savedDensity = remember<Density?> { null }
 
     Column(
         modifier = Modifier
@@ -51,6 +50,33 @@ fun SignatureScreen (
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        PeleAppBar("Signature")
+
+        when (uiState) {
+            UiState.Idle -> {
+                // load in the background the payment details
+                viewModel.loadPaymentId(paymentId)
+            }
+
+            is UiState.Success<*> -> {
+                val data = (uiState as UiState.Success<*>).data
+
+                //todo ???
+            }
+
+            is UiState.Error -> {
+                Text((uiState as UiState.Error).message)
+            }
+
+            UiState.Loading -> {
+                LottieProgressBar()
+            }
+
+            else -> {
+                throw Error("Unimplemented UiState: type ${uiState::class.java.simpleName} of ${UiState::class.java.simpleName} is not implemented for SignatureScreen()")
+            }
+        }
+
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = "Please sign below",
@@ -77,19 +103,8 @@ fun SignatureScreen (
                 text = "Submit",
                 color = Color.Green,
                 onClick = {
-                    if(didStartedSigning.value && savedOffsets != null && savedDensity != null) {
-
-                        ///todo move this code to ViewModel // todo use ui state for saving the file + pb lottie
-                        // Capture the signature as an image
-                        val bitmap = SignatureHelper.captureSignatureAsBitmap(savedOffsets!!, savedDensity!!)
-                        val file = saveBitmapToFile(context, bitmap, "signature_") // todo create unique file name to be saved
-
-                        val newFilePath = URLEncoder.encode(file.absolutePath, StandardCharsets.UTF_8.toString())
-                        val newPaymentDetails = paymentDetails.copy(signatureFilePath = newFilePath)
-
-                        Log.d("wow", "SignatureScreen: Encoded String is $newFilePath")
-
-                        viewModel.goToNextScreen(newPaymentDetails)
+                    if (didStartedSigning.value && savedOffsets != null && savedDensity != null) {
+                        viewModel.onSubmitClicked(savedOffsets!!, savedDensity!!)
                     } else {
                         Toast.makeText(context, "Please sign first", Toast.LENGTH_SHORT).show()
                     }

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
@@ -39,11 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.MainActivity
-import com.eyal.exam.pelecard.composables.ActionButton
-import com.eyal.exam.pelecard.composables.AnalogClockComposable
-import com.eyal.exam.pelecard.composables.CurrencyPicker
+import com.eyal.exam.pelecard.ui.common_ui.ActionButton
+import com.eyal.exam.pelecard.ui.common_ui.AnalogClockComposable
+import com.eyal.exam.pelecard.ui.common_ui.CurrencyPicker
 import com.eyal.exam.pelecard.models.SettingId
-import com.eyal.exam.pelecard.utils.AreYouSureDialog
+import com.eyal.exam.pelecard.ui.common_ui.AreYouSureDialog
+import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
 
 @ExperimentalMaterialApi
 @Composable
@@ -64,29 +63,18 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-
-            Icon(
-                imageVector = Icons.Outlined.Info,
-                contentDescription = "Information Icon",
-                modifier = Modifier
-                    .align(Alignment.Top)
-                    .clickable {
-                        viewModel.goToInfo()
-                    }
-            )
-            Text("Menu", fontSize = 24.sp)
-
-            Icon(
-                imageVector = Icons.Outlined.Settings,
-                contentDescription = "Settings Icon",
-                modifier = Modifier
-                    .align(Alignment.Bottom)
-                    .clickable {
-                        viewModel.goToSettings()
-                    }
-            )
-        }
+        PeleAppBar("Main",
+            leftIcon = Icons.Outlined.Info,
+            leftButtonDescription = "Information Icon",
+            onLeftClick = {
+                viewModel.goToInfo()
+            },
+            rightIcon = Icons.Outlined.Settings,
+            rightButtonDescription = "Settings Icon",
+            onRightClick = {
+                viewModel.goToSettings()
+            }
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -98,22 +86,22 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
         Spacer(modifier = Modifier.weight(1f))
 
         TextField(
-            value = if(paymentDetails.amount != 0) {
+            value = if(paymentDetails.amount != 0.0) {
                 paymentDetails.amount.toString()
             } else "",
             isError = paymentDetails.amount <= 0,
             label = { Text("Amount") },
             placeholder = { Text("Enter amount") },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
+                keyboardType = KeyboardType.Decimal,
             ),
             singleLine = true,
             onValueChange = { newValue ->
                 if(newValue.isEmpty()) {
-                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = 0))
+                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = 0.0))
                 }
-                else if(newValue.toIntOrNull() != null) {
-                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toInt()))
+                else if(newValue.toDoubleOrNull() != null) {
+                    viewModel.updatePaymentDetails(paymentDetails.copy(amount = newValue.toDouble()))
                 }
             },
             modifier = Modifier

@@ -22,7 +22,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,12 +32,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.eyal.exam.pelecard.composables.CurrencyPicker
-import com.eyal.exam.pelecard.composables.CurrencyTable
-import com.eyal.exam.pelecard.composables.LottieProgressBar
+import com.eyal.exam.pelecard.ui.common_ui.CurrencyPicker
+import com.eyal.exam.pelecard.ui.common_ui.CurrencyTable
+import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
 import com.eyal.exam.pelecard.models.ConversionScreenParams
-import com.eyal.exam.pelecard.models.CurrencyConversionResponse
+import com.eyal.exam.pelecard.network.CurrencyConversionResponse
 import com.eyal.exam.pelecard.models.UiState
+import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
 
 @Composable
 fun ConversionScreen(
@@ -45,7 +46,7 @@ fun ConversionScreen(
     viewModel: ConversionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState(UiState.Idle)
-    var amount by remember { mutableIntStateOf(screenParams.amount) }
+    var amount by remember { mutableDoubleStateOf(screenParams.amount) }
     var currency by remember { mutableStateOf(screenParams.currency) }
 
     Column(
@@ -55,24 +56,13 @@ fun ConversionScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(text = "Conversion Rates", fontSize = 24.sp, modifier = Modifier.align(Alignment.CenterVertically))
-            Spacer(modifier = Modifier.weight(1f))
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = "Back Icon",
-                modifier = Modifier
-                    .align(Alignment.Bottom)
-                    .clickable {
-                        viewModel.navigateBack()
-                    }
-            )
-
-        }
+        PeleAppBar("Conversion Rates",
+            rightIcon = Icons.AutoMirrored.Filled.ArrowForward,
+            rightButtonDescription = "Back Icon",
+            onRightClick = {
+                viewModel.navigateBack()
+            }
+        )
 
         when (uiState) {
             UiState.Idle -> {
@@ -89,7 +79,7 @@ fun ConversionScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextField(value = amount.toString(), onValueChange = { newAmount ->
-                            amount = newAmount.toIntOrNull() ?: 0
+                            amount = newAmount.toDoubleOrNull() ?: 0.0
                         }, modifier = Modifier.width(120.dp))
 
                         Box(modifier = Modifier.padding(horizontal = 28.dp))

@@ -105,6 +105,13 @@ dependencies {
 
     // Lottie Animations
     implementation(libs.lottie.compose)
+
+
+    //Room DB
+    implementation(libs.androidx.room.runtime)
+    //noinspection KaptUsageInsteadOfKsp
+    kapt(libs.androidx.room.compiler) // For annotation processing
+    implementation(libs.androidx.room.ktx) // For Kotlin extensions
 }
 
 kapt {

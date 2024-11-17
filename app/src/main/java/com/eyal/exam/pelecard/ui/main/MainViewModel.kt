@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eyal.exam.pelecard.abs.Constants
 import com.eyal.exam.pelecard.models.NavEvent
-import com.eyal.exam.pelecard.models.PaymentDetails
+import com.eyal.exam.pelecard.data.entities.PaymentDetails
 import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.models.SettingsConfig
 import com.eyal.exam.pelecard.repos.NavigationRepository
+import com.eyal.exam.pelecard.repos.PaymentRepository
 import com.eyal.exam.pelecard.repos.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val navigationRepository: NavigationRepository,
+    private val paymentRepository: PaymentRepository,
 ) : ViewModel() {
 
     companion object {
@@ -39,6 +41,13 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            Log.d(TAG, "init: _paymentDetails.id ${_paymentDetails.value.id}")
+
+            // insert initial payment details
+            val newId = paymentRepository.insert(_paymentDetails.value)
+            Log.d(TAG, "init: insert Success -> new payment details record Id $newId")
+            _paymentDetails.value = _paymentDetails.value.copy(id = newId.toInt())
+
             settingsRepository.settingsConfiguration.collect { settingsConfig ->
                 _settingsConfiguration.value = settingsConfig
                 Log.d(TAG, "collect settingsConfig: ${settingsConfig.settingsMap.size} Parameters")
@@ -53,7 +62,7 @@ class MainViewModel @Inject constructor(
                     Log.d(TAG, "collect settingsConfig: Set isPayments to false")
                 }
                 if(_settingsConfiguration.value?.settingsMap?.get(SettingId.CURRENCY)?.value == false) {
-                    updatePaymentDetails(_paymentDetails.value.copy(currency = ""))
+                    updatePaymentDetails(_paymentDetails.value.copy(currency = "")) // todo convert to isCurrency?
                     Log.d(TAG, "collect settingsConfig: Set currency to false")
                 }
             }
@@ -63,6 +72,10 @@ class MainViewModel @Inject constructor(
     //----------------- Functions -----------------
     fun updatePaymentDetails(paymentDetails: PaymentDetails) {
         _paymentDetails.value = paymentDetails
+        // save to Room DB
+        viewModelScope.launch {
+            paymentRepository.updatePaymentDetails(paymentDetails)
+        }
     }
 
     fun goToSettings() {
@@ -81,9 +94,9 @@ class MainViewModel @Inject constructor(
         // decide on which screen to go next
         val nextNavEvent: NavEvent = _paymentDetails.value.let {
             if (it.isSignature) {
-                NavEvent.NavigateToSignature(paymentDetails.value)
+                NavEvent.NavigateToSignature(paymentDetails.value.id)
             } else {
-                NavEvent.NavigateToReceipt(paymentDetails.value)
+                NavEvent.NavigateToReceipt(paymentDetails.value.id)
             }
         }
         viewModelScope.launch {

@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
+import com.eyal.exam.pelecard.ui.common_ui.SettingsItemRow
 
 @Composable
 fun SettingsScreen(
@@ -35,45 +37,20 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), horizontalArrangement = Arrangement.SpaceBetween) { // todo extract TO app bar widget
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = "Settings",
-                style = MaterialTheme.typography.h6,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = "Back Icon",
-                modifier = Modifier
-                    .align(Alignment.Bottom)
-                    .clickable {
-                        viewModel.navigateBack()
-                    }
-            )
-        }
-
+        PeleAppBar("Settings",
+            rightIcon = Icons.AutoMirrored.Filled.ArrowForward,
+            rightButtonDescription = "Back Icon",
+            onRightClick = {
+                viewModel.navigateBack()
+            }
+        )
 
         settingsConfig?.settingsMap?.forEach { (id, setting) ->
-            Row(
-                modifier = Modifier.padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(setting.title)
-                Spacer(modifier = Modifier.weight(1f))
-                Switch(
-                    checked = setting.value == true,
-                    onCheckedChange = { isChecked ->
-                        val newSettingsConfig = settingsConfig!!.copy(settingsMap = settingsConfig!!.settingsMap.toMutableMap().apply {
-                            this[id] = setting.copy(value = isChecked)
-                        })
-                        viewModel.updateSettingsConfigurations(newSettingsConfig)
-                    },
-                    modifier = Modifier.padding(start = 8.dp)
-                )
+            SettingsItemRow(text = setting.title, isOn = setting.value == true) { isChecked ->
+                val newSettingsConfig = settingsConfig!!.copy(settingsMap = settingsConfig!!.settingsMap.toMutableMap().apply {
+                    this[id] = setting.copy(value = isChecked)
+                })
+                viewModel.updateSettingsConfigurations(newSettingsConfig)
             }
         }
     }

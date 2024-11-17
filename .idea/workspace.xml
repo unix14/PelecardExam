@@ -17,18 +17,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b2aea9e8-7470-4967-8409-eca6cdafbfaf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/CurrencyPicker.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/CurrencyTable.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/LottieProgressBar.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/ConversionScreenParams.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/InformationModels.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/RouteName.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/conversion/ConversionScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/conversion/ConversionViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/info/InfoScreen.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/info/InformationViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/NavigationHelper.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/raw/anim_pb_circle.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/dao/PaymentDetailsDao.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/database/PaymentDatabase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/di/DatabaseModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/network/StatusDataResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/repos/PaymentRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/repos/SignatureRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/PeleAppBar.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/SettingsItemRow.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.4/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.4/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.4/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.4/checksums/sha1-checksums.bin" afterDir="false" />
@@ -44,13 +40,30 @@
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/ApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/ApiService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/PelecardApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/PelecardApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/ApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/network/ApiService.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/abs/Constants.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/ActionButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/ActionButton.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/CurrencyData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/CurrencyData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/ActionButton.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/ActionButton.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/AnalogClockComposable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/AnalogClockComposable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/CurrencyPicker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/CurrencyPicker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/CurrencyTable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/CurrencyTable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/LottieProgressBar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/LottieProgressBar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/ReceiptDetail.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/ReceiptDetail.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/SignaturePad.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/SignaturePad.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/composables/SignaturePreview.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/SignaturePreview.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/ConversionScreenParams.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/ConversionScreenParams.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/CurrencyConversionResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/network/CurrencyConversionResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/CurrencyDataResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/network/CurrencyDataResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/InformationModels.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/NavEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/NavEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/navigation/NavigationComponent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/navigation/NavigationComponent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/models/PaymentDetails.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/data/entities/PaymentDetails.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/modules/NetworkModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/di/NetworkModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/navigation/NavigationComponent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/navigation/NavigationComponent.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/repos/CurrencyRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/repos/CurrencyRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/repos/NavigationRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/repos/NavigationRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/PelecardExamApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/PelecardExamApp.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/conversion/ConversionScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/conversion/ConversionScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/info/InfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/info/InfoScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/main/MainScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/main/MainScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/main/MainViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/main/MainViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/receipt/ReceiptScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/receipt/ReceiptScreen.kt" afterDir="false" />
@@ -58,8 +71,10 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/settings/SettingsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/settings/SettingsScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/signature/SignatureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/signature/SignatureScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/signature/SignatureViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/signature/SignatureViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/AreYouSureDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/AreYouSureDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/IntExtensions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/IntExtensions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/AreYouSureDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/ui/common_ui/AreYouSureDialog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/IntExtensions.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/helpers/DoubleExtensions.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/NavigationHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/helpers/NavigationHelper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/utils/SignatureHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/eyal/exam/pelecard/helpers/SignatureHelper.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,8 +95,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Enum" />
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -111,6 +126,9 @@
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;F:/projects/PelecardExam/app/src/main/java/com/eyal/exam/pelecard/ui/receipt&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
@@ -120,9 +138,14 @@
       <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard\ui\receipt" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard" />
+      <recent name="F:\projects\PelecardExam\app\src\main\java\com\eyal\exam\pelecard\ui\common_ui" />
       <recent name="F:\projects\PelecardExam\app\src\main\res\raw" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.eyal.exam.pelecard.data.entities" />
+      <recent name="com.eyal.exam.pelecard.models" />
+      <recent name="com.eyal.exam.pelecard.network" />
       <recent name="com.eyal.exam.pelecard.repos" />
     </key>
   </component>
@@ -192,6 +215,19 @@
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
       <method v="2">
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="PelecardExam.app" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="PelecardExam.app" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
       </method>
     </configuration>
   </component>

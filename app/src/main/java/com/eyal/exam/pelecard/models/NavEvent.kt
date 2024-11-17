@@ -1,10 +1,12 @@
 package com.eyal.exam.pelecard.models
 
+import com.eyal.exam.pelecard.data.entities.PaymentDetails
+
 sealed class NavEvent(val routeName: RouteName) {
     data object NavigateToMain : NavEvent(RouteName.MAIN)
     data object NavigateToSettings : NavEvent(RouteName.SETTINGS)
-    data class NavigateToSignature(val paymentDetails: PaymentDetails) : NavEvent(RouteName.SIGNATURE)
-    data class NavigateToReceipt(val paymentDetails: PaymentDetails) : NavEvent(RouteName.RECEIPT)
-    data class NavigateToConversion(val screenParams: ConversionScreenParams) : NavEvent(RouteName.CONVERSION)
+    data class NavigateToSignature(val paymentId: Int) : NavEvent(RouteName.SIGNATURE)
+    data class NavigateToReceipt(val paymentId: Int) : NavEvent(RouteName.RECEIPT)
+    data class NavigateToConversion(val amount: Double, val currency: String) : NavEvent(RouteName.CONVERSION)
     data object NavigateToInfo : NavEvent(RouteName.INFO)
 }
