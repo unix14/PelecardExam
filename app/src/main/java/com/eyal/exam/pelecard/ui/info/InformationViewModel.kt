@@ -42,8 +42,8 @@ class InformationViewModel @Inject constructor(
         }
     }
 
-    fun navigateBack() {
-        viewModelScope.launch {
+    fun navigateBack() = with(viewModelScope) {
+        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToMain)
         }
     }

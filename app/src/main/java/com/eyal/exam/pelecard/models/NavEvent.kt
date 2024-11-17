@@ -1,7 +1,5 @@
 package com.eyal.exam.pelecard.models
 
-import com.eyal.exam.pelecard.data.entities.PaymentDetails
-
 sealed class NavEvent(val routeName: RouteName) {
     data object NavigateToMain : NavEvent(RouteName.MAIN)
     data object NavigateToSettings : NavEvent(RouteName.SETTINGS)

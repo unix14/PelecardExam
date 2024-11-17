@@ -28,8 +28,8 @@ class ConversionViewModel @Inject constructor(
         private const val TAG = "CurrencyConversionViewModel"
     }
 
-    fun fetchConversionRate(baseCurrency: String, currencies: String? = null) {
-        viewModelScope.launch {
+    fun fetchConversionRate(baseCurrency: String, currencies: String? = null) = with(viewModelScope) {
+        launch {
             _uiState.emit(UiState.Loading)
             Log.d(TAG, "fetchConversionRate: Loading $baseCurrency $currencies")
             try {
@@ -46,8 +46,8 @@ class ConversionViewModel @Inject constructor(
         }
     }
 
-    fun navigateBack() {
-        viewModelScope.launch {
+    fun navigateBack() = with(viewModelScope) {
+        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToMain)
         }
     }

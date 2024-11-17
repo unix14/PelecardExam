@@ -32,15 +32,15 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun navigateBack() {
-        viewModelScope.launch {
+    fun navigateBack() = with(viewModelScope) {
+        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToMain)
         }
     }
 
     //todo update settings configurations settingsRepository
-    fun updateSettingsConfigurations(settingsConfig: SettingsConfig) {
-        viewModelScope.launch {
+    fun updateSettingsConfigurations(settingsConfig: SettingsConfig) = with(viewModelScope) {
+        launch {
             settingsRepository.updateSettingsConfigurations(settingsConfig)
         }
     }

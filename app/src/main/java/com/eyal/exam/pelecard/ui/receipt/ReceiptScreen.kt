@@ -1,20 +1,11 @@
 package com.eyal.exam.pelecard.ui.receipt
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,26 +16,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.eyal.exam.pelecard.data.entities.PaymentDetails
+import com.eyal.exam.pelecard.helpers.getNumberFormat
+import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.ui.common_ui.ActionButton
+import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
+import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
 import com.eyal.exam.pelecard.ui.common_ui.ReceiptDetail
 import com.eyal.exam.pelecard.ui.common_ui.SignaturePreview
-import com.eyal.exam.pelecard.data.entities.PaymentDetails
-import com.eyal.exam.pelecard.models.UiState
-import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
-import com.eyal.exam.pelecard.helpers.getNumberFormat
-import com.eyal.exam.pelecard.network.CurrencyConversionResponse
-import com.eyal.exam.pelecard.ui.common_ui.CurrencyPicker
-import com.eyal.exam.pelecard.ui.common_ui.CurrencyTable
-import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
-import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun ReceiptScreen (
     paymentId: Int,
     viewModel: ReceiptViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState(UiState.Idle)
 
     Column(
@@ -54,7 +39,7 @@ fun ReceiptScreen (
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-        PeleAppBar("Receipt",)
+        PeleAppBar("Receipt")
 
         when (uiState) {
             UiState.Idle -> {
@@ -80,7 +65,6 @@ fun ReceiptScreen (
 
                     if(paymentDetails.isSignature) {
                         Text("Signature:", fontSize = 18.sp, modifier = Modifier.padding(top= 20.dp))
-//                        val filePathString = URLDecoder.decode(paymentDetails.signatureFilePath, StandardCharsets.UTF_8.toString()) // todo remove
                         SignaturePreview(filePath = paymentDetails.signatureFilePath ?: "", modifier = Modifier.padding(top= 20.dp))
                     }
 

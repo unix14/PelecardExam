@@ -53,15 +53,8 @@ fun SignatureScreen(
         PeleAppBar("Signature")
 
         when (uiState) {
-            UiState.Idle -> {
-                // load in the background the payment details
-                viewModel.loadPaymentId(paymentId)
-            }
-
-            is UiState.Success<*> -> {
-                val data = (uiState as UiState.Success<*>).data
-
-                //todo ???
+            is UiState.Success<*>, UiState.Idle -> {
+                // do nothing
             }
 
             is UiState.Error -> {
@@ -104,7 +97,7 @@ fun SignatureScreen(
                 color = Color.Green,
                 onClick = {
                     if (didStartedSigning.value && savedOffsets != null && savedDensity != null) {
-                        viewModel.onSubmitClicked(savedOffsets!!, savedDensity!!)
+                        viewModel.onSubmitClicked(paymentId, savedOffsets!!, savedDensity!!)
                     } else {
                         Toast.makeText(context, "Please sign first", Toast.LENGTH_SHORT).show()
                     }

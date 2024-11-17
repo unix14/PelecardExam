@@ -35,50 +35,40 @@ class SignatureViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
     val uiState: StateFlow<UiState> get() = _uiState
 
-    private val _paymentDetails = MutableStateFlow<PaymentDetails?>(null)
-
-    fun loadPaymentId(paymentId: Int) {
-        viewModelScope.launch {
-            Log.d(TAG, "loadPaymentId: paymentId is $paymentId")
-            val paymentDetails: PaymentDetails? = paymentRepository.getPaymentById(paymentId)
-            Log.d(TAG, "loadPaymentId: paymentDetails is $paymentDetails")
-            _paymentDetails.emit(paymentDetails)
-        }
-    }
-
-    fun goToPreviousScreen() {
-        viewModelScope.launch {
+    fun goToPreviousScreen() = with(viewModelScope) {
+        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToMain)
         }
     }
 
-    fun onSubmitClicked(savedOffsets: List<Offset>, savedDensity: Density) {
-        viewModelScope.launch {
+    fun onSubmitClicked(paymentId: Int, savedOffsets: List<Offset>, savedDensity: Density) = with(viewModelScope) {
+        launch {
             Log.d(TAG, "onSubmitClicked: savedOffsets is $savedOffsets and savedDensity is $savedDensity")
-
             _uiState.value = UiState.Loading
             try {
-                _paymentDetails.value?.let { paymentDetails ->
-                    val paymentId = paymentDetails.id
+                // 1. Get PaymentDetails from Payment ID
+                Log.d(TAG, "onSubmitClicked: paymentId is $paymentId")
+                val paymentDetails: PaymentDetails? = paymentRepository.getPaymentById(paymentId)
+
+                paymentDetails?.let {
                     Log.d(TAG, "onSubmitClicked: paymentId is $paymentId")
 
-                    // 1. Save Signature as file
+                    // 2. Save Signature as file
                     val file = signatureRepository.saveSignature(savedOffsets, savedDensity, paymentId)
                     Log.d(TAG, "onSubmitClicked: newFilePath is ${file.absolutePath}")
 
-                    // 2. Update file path inside of the payment details
+                    // 3. Update file path inside of the payment details
                     val newPaymentDetails = paymentDetails.copy(signatureFilePath = file.absolutePath)
                     Log.d(TAG, "onSubmitClicked: newPaymentDetails is $newPaymentDetails")
 
-                    // 3. update DB
+                    // 4. update DB
                     paymentRepository.updatePaymentDetails(newPaymentDetails)
                     Log.d(TAG, "onSubmitClicked: newPaymentDetails is updated in paymentRepository")
 
+                    // 5. Navigate to Next Screen
                     navigationRepository.navigateTo(NavEvent.NavigateToReceipt(paymentId))
                 }
-
                 delay(680) // for convenient loading animation
-
                 _uiState.value = UiState.Success(true)
             } catch (e: Exception) {
                 _uiState.value = UiState.Error("Error saving signature")

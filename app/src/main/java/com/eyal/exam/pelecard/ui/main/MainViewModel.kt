@@ -70,36 +70,37 @@ class MainViewModel @Inject constructor(
     }
 
     //----------------- Functions -----------------
-    fun updatePaymentDetails(paymentDetails: PaymentDetails) {
-        _paymentDetails.value = paymentDetails
-        // save to Room DB
-        viewModelScope.launch {
+    fun updatePaymentDetails(paymentDetails: PaymentDetails) = with(viewModelScope) {
+        launch {
+            // update the flow
+            _paymentDetails.value = paymentDetails
+            // save to Room DB
             paymentRepository.updatePaymentDetails(paymentDetails)
         }
     }
 
-    fun goToSettings() {
-        viewModelScope.launch {
+    fun goToSettings() = with(viewModelScope){
+        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToSettings)
         }
     }
 
-    fun goToInfo() {
-        viewModelScope.launch {
+    fun goToInfo() = with(viewModelScope) {
+        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToInfo)
         }
     }
 
-    fun goToNextScreen() {
-        // decide on which screen to go next
-        val nextNavEvent: NavEvent = _paymentDetails.value.let {
-            if (it.isSignature) {
-                NavEvent.NavigateToSignature(paymentDetails.value.id)
-            } else {
-                NavEvent.NavigateToReceipt(paymentDetails.value.id)
+    fun goToNextScreen() = with(viewModelScope) {
+        launch {
+            // decide on which screen to go next
+            val nextNavEvent: NavEvent = _paymentDetails.value.let {
+                if (it.isSignature) {
+                    NavEvent.NavigateToSignature(paymentDetails.value.id)
+                } else {
+                    NavEvent.NavigateToReceipt(paymentDetails.value.id)
+                }
             }
-        }
-        viewModelScope.launch {
             navigationRepository.navigateTo(nextNavEvent)
         }
     }
