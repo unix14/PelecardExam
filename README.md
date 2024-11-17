@@ -63,7 +63,3 @@ The implementation showcases a professional, secure, and scalable approach to ha
 - GitHub: [unix14](https://github.com/unix14)
 
 Feel free to reach out or check my other projects for more Android and Flutter content!
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
