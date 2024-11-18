@@ -22,3 +22,8 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         Log.d(TAG, "Migration from 2 to 3 executed")
     }
 }
+
+
+
+/// As part of the development process I added a few extra parameters to PaymentDetails data class,
+/// So instead of deleting the cache or the app itself, I used migrations to support these changes.

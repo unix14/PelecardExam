@@ -76,6 +76,7 @@ class MainViewModel @Inject constructor(
             _paymentDetails.value = paymentDetails
             // save to Room DB
             paymentRepository.updatePaymentDetails(paymentDetails)
+            Log.d(TAG, "updatePaymentDetails: new paymentDetails set to $paymentDetails")
         }
     }
 
@@ -101,6 +102,7 @@ class MainViewModel @Inject constructor(
                     NavEvent.NavigateToReceipt(paymentDetails.value.id)
                 }
             }
+            Log.d(TAG, "goToNextScreen: nextNavEvent is $nextNavEvent")
             navigationRepository.navigateTo(nextNavEvent)
         }
     }

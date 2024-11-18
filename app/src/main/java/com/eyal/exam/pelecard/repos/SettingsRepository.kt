@@ -18,9 +18,6 @@ class SettingsRepository @Inject constructor() {
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-
-
-            ///todo fetch settings from shared preferences or room DB
             _settingsConfiguration.emit(Constants.DEFAULT_SETTINGS_CONFIG)
         }
     }

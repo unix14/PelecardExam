@@ -9,7 +9,6 @@ import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.repos.NavigationRepository
 import com.eyal.exam.pelecard.repos.PaymentRepository
 import com.eyal.exam.pelecard.repos.PaymentsServiceRepository
-import com.eyal.exam.pelecard.ui.signature.SignatureViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,12 +27,16 @@ class ReceiptViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Idle)
     val uiState: StateFlow<UiState> get() = _uiState
 
+    companion object {
+        const val TAG = "ReceiptViewModel"
+    }
+
     fun loadPaymentId(paymentId: Int) = with(viewModelScope) {
         launch {
             _uiState.emit(UiState.Loading)
-            Log.d(SignatureViewModel.TAG, "loadPaymentId: paymentId is $paymentId")
+            Log.d(TAG, "loadPaymentId: paymentId is $paymentId")
             val paymentDetails: PaymentDetails? = paymentRepository.getPaymentById(paymentId)
-            Log.d(SignatureViewModel.TAG, "loadPaymentId: paymentDetails is $paymentDetails")
+            Log.d(TAG, "loadPaymentId: paymentDetails is $paymentDetails")
             _uiState.emit(UiState.Success(paymentDetails))
         }
     }
@@ -41,8 +44,11 @@ class ReceiptViewModel @Inject constructor(
     fun onFinishedClicked(paymentDetails: PaymentDetails) = with(viewModelScope) {
         launch {
             _uiState.emit(UiState.Loading)
+            Log.d(TAG, "onFinishedClicked: paymentDetails is $paymentDetails")
+
             val newPaymentDetails = paymentDetails.copy(isCompleted= true)
             paymentRepository.updatePaymentDetails(newPaymentDetails)
+            Log.d(TAG, "onFinishedClicked: newPaymentDetails is $newPaymentDetails")
 
             try {
                 /// Act as if we send the payment to another API via POST method
@@ -51,24 +57,21 @@ class ReceiptViewModel @Inject constructor(
                     /// This is not an Error -> but acts similar
                     _uiState.emit(UiState.Error(response.body.popupText))
                 }
+                Log.d(TAG, "onFinishedClicked: paymentsServiceRepository.response is $response")
             } catch (e: Throwable) {
                 // ignore error -> if sometimes this fake API won't work
+                Log.d(TAG, "onFinishedClicked: paymentsServiceRepository.error is $e")
             }
 
             delay(1750) // for convenient loading animation
-            goToMainScreen()
-            _uiState.emit(UiState.Idle)
-        }
-    }
-
-    private fun goToMainScreen() = with(viewModelScope) {
-        launch {
             navigationRepository.navigateTo(NavEvent.NavigateToMain)
+            _uiState.emit(UiState.Idle)
         }
     }
 
     fun onConvertClicked(paymentDetails: PaymentDetails) = with(viewModelScope) {
         launch {
+            Log.d(TAG, "onConvertClicked: paymentDetails is $paymentDetails")
             navigationRepository.navigateTo(NavEvent.NavigateToConversion(
                 amount = paymentDetails.amount,
                 currency = paymentDetails.currency

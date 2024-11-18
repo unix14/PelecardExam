@@ -1,5 +1,6 @@
 package com.eyal.exam.pelecard.ui.settings
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eyal.exam.pelecard.data.entities.SettingsConfig
@@ -21,10 +22,15 @@ class SettingsViewModel @Inject constructor(
     private val _settingsConfiguration = MutableStateFlow<SettingsConfig?>(null)
     val settingsConfiguration = _settingsConfiguration.asStateFlow()
 
+    companion object {
+        const val TAG = "SettingsViewModel"
+    }
+
     init {
         viewModelScope.launch {
             settingsRepository.settingsConfiguration.collect { settingsConfig ->
                 _settingsConfiguration.value = settingsConfig
+                Log.d(TAG, "init: settingsConfiguration.collect: settingsConfig is $settingsConfig")
             }
         }
     }
@@ -35,10 +41,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    //todo update settings configurations settingsRepository
     fun updateSettingsConfigurations(settingsConfig: SettingsConfig) = with(viewModelScope) {
         launch {
             settingsRepository.updateSettingsConfigurations(settingsConfig)
+            Log.d(TAG, "updateSettingsConfigurations: The New SettingsConfig is $settingsConfig")
         }
     }
 
