@@ -7,7 +7,6 @@ import com.eyal.exam.pelecard.models.NavEvent
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.repos.CurrencyRepository
 import com.eyal.exam.pelecard.repos.NavigationRepository
-import com.eyal.exam.pelecard.ui.main.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -21,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.eyal.exam.pelecard.R
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.ui.common_ui.ActionButton
 import com.eyal.exam.pelecard.ui.common_ui.AreYouSureDialog
@@ -50,7 +52,7 @@ fun SignatureScreen(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        PeleAppBar("Signature")
+        PeleAppBar(stringResource(R.string.signature))
 
         when (uiState) {
             is UiState.Success<*>, UiState.Idle -> {
@@ -66,13 +68,18 @@ fun SignatureScreen(
             }
 
             else -> {
-                throw Error("Unimplemented UiState: type ${uiState::class.java.simpleName} of ${UiState::class.java.simpleName} is not implemented for SignatureScreen()")
+                throw Error(
+                    stringResource(
+                        R.string.ui_state_signature_screen_error_msg,
+                        uiState::class.java.simpleName,
+                        UiState::class.java.simpleName
+                    ))
             }
         }
 
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "Please sign below",
+            text = stringResource(R.string.please_sign_below),
             modifier = Modifier.padding(16.dp)
         )
 
@@ -93,18 +100,18 @@ fun SignatureScreen(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             ActionButton(
-                text = "Submit",
+                text = stringResource(R.string.submit),
                 color = Color.Green,
                 onClick = {
                     if (didStartedSigning.value && savedOffsets != null && savedDensity != null) {
                         viewModel.onSubmitClicked(paymentId, savedOffsets!!, savedDensity!!)
                     } else {
-                        Toast.makeText(context, "Please sign first", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.please_sign_first), Toast.LENGTH_SHORT).show()
                     }
                 },
             )
             ActionButton(
-                text = "Cancel",
+                text = stringResource(R.string.cancel),
                 color = Color.Red,
                 onClick = {
                     showAreYouSureDialog = true
@@ -114,10 +121,10 @@ fun SignatureScreen(
     }
 
     AreYouSureDialog(
-        title = "Cancel Payment",
-        subtitle = "Are you sure you want to cancel this payment?",
-        positiveText = "Cancel Payment",
-        negativeText = "Let's Sign",
+        title = stringResource(R.string.are_you_sure),
+        subtitle = stringResource(R.string.cancel_payment_msg),
+        positiveText = stringResource(R.string.cancel_payment),
+        negativeText = stringResource(R.string.let_s_sign),
         enabled = showAreYouSureDialog,
         onConfirm = {
             viewModel.goToPreviousScreen()

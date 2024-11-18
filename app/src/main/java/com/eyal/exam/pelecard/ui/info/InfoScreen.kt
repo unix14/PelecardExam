@@ -1,30 +1,26 @@
 package com.eyal.exam.pelecard.ui.info
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
+import com.eyal.exam.pelecard.R
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.network.StatusDataResponse
+import com.eyal.exam.pelecard.ui.common_ui.LottieProgressBar
 import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
 
 @Composable
@@ -40,9 +36,10 @@ fun InfoScreen(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        PeleAppBar("Information",
+        PeleAppBar(
+            stringResource(R.string.information),
             rightIcon = Icons.AutoMirrored.Filled.ArrowForward,
-            rightButtonDescription = "Back Icon",
+            rightButtonDescription = stringResource(R.string.back_icon),
             onRightClick = {
                 viewModel.navigateBack()
             }
@@ -60,21 +57,21 @@ fun InfoScreen(
                     val quotas = data.quotas
 
                     Text(
-                        text = "Account ID: ${data.accountId}",
+                        text = stringResource(R.string.account_id, data.accountId),
                         style = MaterialTheme.typography.body2,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
                     Text(
-                        text = "Total: ${quotas.month.total}",
+                        text = stringResource(R.string.total, quotas.month.total),
                         style = MaterialTheme.typography.body1
                     )
                     Text(
-                        text = "Used: ${quotas.month.used}",
+                        text = stringResource(R.string.used, quotas.month.used),
                         style = MaterialTheme.typography.body1
                     )
                     Text(
-                        text = "Remaining: ${quotas.month.remaining}",
+                        text = stringResource(R.string.remaining, quotas.month.remaining),
                         style = MaterialTheme.typography.body1
                     )
 
@@ -83,7 +80,7 @@ fun InfoScreen(
 
 
                     Text(
-                        text = "This screen shows the status of the API usage for FreeCurrency API.",
+                        text = stringResource(R.string.info_screen_msg),
                         style = MaterialTheme.typography.body2,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
@@ -97,7 +94,13 @@ fun InfoScreen(
                 LottieProgressBar()
             }
             else -> {
-                throw Error("Unimplemented UiState: type ${uiState::class.java.simpleName} of ${UiState::class.java.simpleName} is not implemented for ConversionScreen()")
+                throw Error(
+                    stringResource(
+                        R.string.ui_state_info_screen_error_msg,
+                        uiState::class.java.simpleName,
+                        UiState::class.java.simpleName
+                    )
+                )
             }
         }
     }

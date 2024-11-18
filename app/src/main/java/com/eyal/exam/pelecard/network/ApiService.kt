@@ -11,13 +11,6 @@ interface ApiService {
         @Query("currencies") currencies: String? = null,
     ): CurrencyConversionResponse
 
-
-    //todo remove if not needed
-    @GET("currencies")
-    suspend fun getCurrenciesData(
-        @Query("currencies") currencies: String? = null,
-    ): CurrencyDataResponse
-
     @GET("status")
     suspend fun getStatus(): StatusDataResponse
 }

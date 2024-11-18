@@ -1,7 +1,6 @@
 package com.eyal.exam.pelecard.di
 
 import android.content.Context
-import androidx.room.Room
 import com.eyal.exam.pelecard.data.dao.PaymentDetailsDao
 import com.eyal.exam.pelecard.data.database.PaymentDatabase
 import dagger.Module

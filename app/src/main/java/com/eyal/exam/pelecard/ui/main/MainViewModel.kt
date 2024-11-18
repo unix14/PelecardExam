@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eyal.exam.pelecard.abs.Constants
-import com.eyal.exam.pelecard.models.NavEvent
 import com.eyal.exam.pelecard.data.entities.PaymentDetails
+import com.eyal.exam.pelecard.data.entities.SettingsConfig
+import com.eyal.exam.pelecard.models.NavEvent
 import com.eyal.exam.pelecard.models.SettingId
-import com.eyal.exam.pelecard.models.SettingsConfig
 import com.eyal.exam.pelecard.repos.NavigationRepository
 import com.eyal.exam.pelecard.repos.PaymentRepository
 import com.eyal.exam.pelecard.repos.SettingsRepository
@@ -62,7 +62,7 @@ class MainViewModel @Inject constructor(
                     Log.d(TAG, "collect settingsConfig: Set isPayments to false")
                 }
                 if(_settingsConfiguration.value?.settingsMap?.get(SettingId.CURRENCY)?.value == false) {
-                    updatePaymentDetails(_paymentDetails.value.copy(currency = "")) // todo convert to isCurrency?
+                    updatePaymentDetails(_paymentDetails.value.copy(isCurrency = false))
                     Log.d(TAG, "collect settingsConfig: Set currency to false")
                 }
             }

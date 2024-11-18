@@ -7,8 +7,9 @@ import androidx.room.RoomDatabase
 import com.eyal.exam.pelecard.data.dao.PaymentDetailsDao
 import com.eyal.exam.pelecard.data.entities.PaymentDetails
 import com.eyal.exam.pelecard.data.migrations.MIGRATION_1_2
+import com.eyal.exam.pelecard.data.migrations.MIGRATION_2_3
 
-@Database(entities = [PaymentDetails::class], version = 2, exportSchema = false)
+@Database(entities = [PaymentDetails::class], version = 3, exportSchema = false)
 abstract class PaymentDatabase : RoomDatabase() {
     abstract fun paymentDetailsDao(): PaymentDetailsDao
 
@@ -23,7 +24,7 @@ abstract class PaymentDatabase : RoomDatabase() {
                     PaymentDatabase::class.java,
                     "payment_database"
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

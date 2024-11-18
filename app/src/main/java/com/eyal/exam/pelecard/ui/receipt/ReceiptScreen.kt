@@ -12,10 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.eyal.exam.pelecard.R
 import com.eyal.exam.pelecard.data.entities.PaymentDetails
 import com.eyal.exam.pelecard.helpers.getNumberFormat
 import com.eyal.exam.pelecard.models.UiState
@@ -39,7 +40,7 @@ fun ReceiptScreen (
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-        PeleAppBar("Receipt")
+        PeleAppBar(stringResource(R.string.receipt))
 
         when (uiState) {
             UiState.Idle -> {
@@ -52,26 +53,26 @@ fun ReceiptScreen (
 
                 if(paymentDetails is PaymentDetails) {
                     Spacer(modifier = Modifier.weight(1f))
-                    ReceiptDetail(key = "Amount:", value = paymentDetails.amount.getNumberFormat())
+                    ReceiptDetail(key = stringResource(R.string.amount), value = paymentDetails.amount.getNumberFormat())
                     if(paymentDetails.isPayments) {
                         ReceiptDetail(
-                            key = "Payments:",
+                            key = stringResource(R.string.payments),
                             value = paymentDetails.numberOfPayments.toString()
                         )
                     }
-                    if(paymentDetails.currency.isNotEmpty()) {
-                        ReceiptDetail(key = "Currency:", value = paymentDetails.currency)
+                    if(paymentDetails.isCurrency) {
+                        ReceiptDetail(key = stringResource(R.string.currency), value = paymentDetails.currency)
                     }
 
                     if(paymentDetails.isSignature) {
-                        Text("Signature:", fontSize = 18.sp, modifier = Modifier.padding(top= 20.dp))
+                        Text(stringResource(R.string.signature), fontSize = 18.sp, modifier = Modifier.padding(top= 20.dp))
                         SignaturePreview(filePath = paymentDetails.signatureFilePath ?: "", modifier = Modifier.padding(top= 20.dp))
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     ActionButton(
-                        text = "Convert",
+                        text = stringResource(R.string.convert),
                         color = Color.Cyan,
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         onClick = {
@@ -79,9 +80,11 @@ fun ReceiptScreen (
                         },
                     )
                     ActionButton(
-                        text = "Finish",
+                        text = stringResource(R.string.finish),
                         color = Color.Green,
-                        modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally),
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .align(Alignment.CenterHorizontally),
                         onClick = {
                             viewModel.onFinishedClicked(paymentDetails)
                         },
@@ -95,7 +98,12 @@ fun ReceiptScreen (
                 LottieProgressBar()
             }
             else -> {
-                throw Error("Unimplemented UiState: type ${uiState::class.java.simpleName} of ${UiState::class.java.simpleName} is not implemented for ConversionScreen()")
+                throw Error(
+                    stringResource(
+                        R.string.ui_state_receipt_screen_error_msg,
+                        uiState::class.java.simpleName,
+                        UiState::class.java.simpleName
+                    ))
             }
         }
     }

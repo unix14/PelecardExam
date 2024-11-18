@@ -12,9 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.eyal.exam.pelecard.helpers.getNumberFormat
 import com.eyal.exam.pelecard.models.ConversionScreenParams
 import com.eyal.exam.pelecard.network.CurrencyConversionResponse
-import com.eyal.exam.pelecard.helpers.getNumberFormat
 
 @Composable
 fun CurrencyTable(

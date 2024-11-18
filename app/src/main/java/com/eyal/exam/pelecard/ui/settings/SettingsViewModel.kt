@@ -2,15 +2,12 @@ package com.eyal.exam.pelecard.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.eyal.exam.pelecard.abs.Constants
+import com.eyal.exam.pelecard.data.entities.SettingsConfig
 import com.eyal.exam.pelecard.models.NavEvent
-import com.eyal.exam.pelecard.models.SettingsConfig
 import com.eyal.exam.pelecard.repos.NavigationRepository
 import com.eyal.exam.pelecard.repos.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

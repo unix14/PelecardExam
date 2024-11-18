@@ -1,6 +1,10 @@
 package com.eyal.exam.pelecard.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.eyal.exam.pelecard.data.entities.PaymentDetails
 
 @Dao

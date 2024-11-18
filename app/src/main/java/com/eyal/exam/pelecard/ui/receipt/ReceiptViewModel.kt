@@ -8,6 +8,7 @@ import com.eyal.exam.pelecard.models.NavEvent
 import com.eyal.exam.pelecard.models.UiState
 import com.eyal.exam.pelecard.repos.NavigationRepository
 import com.eyal.exam.pelecard.repos.PaymentRepository
+import com.eyal.exam.pelecard.repos.PaymentsServiceRepository
 import com.eyal.exam.pelecard.ui.signature.SignatureViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class ReceiptViewModel @Inject constructor(
     private val navigationRepository: NavigationRepository,
     private val paymentRepository: PaymentRepository,
+    private val paymentsServiceRepository: PaymentsServiceRepository,
 ) : ViewModel() {
 
     //----------------- UI State -----------------
@@ -41,7 +43,19 @@ class ReceiptViewModel @Inject constructor(
             _uiState.emit(UiState.Loading)
             val newPaymentDetails = paymentDetails.copy(isCompleted= true)
             paymentRepository.updatePaymentDetails(newPaymentDetails)
-            delay(1250) // for convenient loading animation
+
+            try {
+                /// Act as if we send the payment to another API via POST method
+                val response = paymentsServiceRepository.postPaymentDetails(newPaymentDetails)
+                if(response.body.isSuccess) {
+                    /// This is not an Error -> but acts similar
+                    _uiState.emit(UiState.Error(response.body.popupText))
+                }
+            } catch (e: Throwable) {
+                // ignore error -> if sometimes this fake API won't work
+            }
+
+            delay(1750) // for convenient loading animation
             goToMainScreen()
             _uiState.emit(UiState.Idle)
         }

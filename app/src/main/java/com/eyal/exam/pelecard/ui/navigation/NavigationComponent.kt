@@ -12,12 +12,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eyal.exam.pelecard.MainActivity
+import com.eyal.exam.pelecard.R
 import com.eyal.exam.pelecard.abs.Constants
 import com.eyal.exam.pelecard.helpers.NavigationHelper
 import com.eyal.exam.pelecard.helpers.getReadableRouteName
@@ -32,7 +34,6 @@ import com.eyal.exam.pelecard.ui.main.MainScreen
 import com.eyal.exam.pelecard.ui.receipt.ReceiptScreen
 import com.eyal.exam.pelecard.ui.settings.SettingsScreen
 import com.eyal.exam.pelecard.ui.signature.SignatureScreen
-import com.eyal.exam.pelecard.ui.signature.SignatureViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,7 +47,7 @@ fun NavigationComponent(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val activity = LocalContext.current as? MainActivity // todo refactor out of here
+    val activity = LocalContext.current as? MainActivity
     var showExitDialog by remember { mutableStateOf(false) }
     var currentRoute by remember { mutableStateOf<String?>(Constants.DEFAULT_STARTING_ROUTE_NAME) }
     NavHost(
@@ -78,8 +79,6 @@ fun NavigationComponent(
             )
         ) { backStackEntry ->
             val amount = backStackEntry.arguments?.getFloat(Constants.NAV_PARAM_CONVERSION_AMOUNT)?.toDouble() ?: 0.0
-            Log.d(SignatureViewModel.TAG, "amount: amount $amount")
-
             val currency = backStackEntry.arguments?.getString(Constants.NAV_PARAM_CONVERSION_CURRENCY) ?: Constants.DEFAULT_CURRENCY
             ConversionScreen(ConversionScreenParams(amount, currency))
         }
@@ -104,7 +103,12 @@ fun NavigationComponent(
                 is NavEvent.NavigateToInfo ->
                     NavigationHelper.navigate(navController, currentRoute!!, null)
                 else -> {
-                    throw Error("Unimplemented Navigation: type ${event::class.java.simpleName} of ${NavEvent::class.java.simpleName} is not implemented for NavigationComponent()")
+                    throw Error(
+                        activity?.getString(
+                            R.string.ui_state_navigation_component_error_msg,
+                            event::class.java.simpleName,
+                            NavEvent::class.java.simpleName
+                        ))
                 }
             }
         }
@@ -123,10 +127,13 @@ fun NavigationComponent(
     }
 
     AreYouSureDialog(
-        title = "Exit Dialog",
-        subtitle = "Are you sure you want to exit ${currentRoute.getReadableRouteName()} screen?",
-        positiveText = "Exit",
-        negativeText = "Cancel",
+        title = stringResource(R.string.exit_dialog),
+        subtitle = stringResource(
+            R.string.are_you_sure_you_want_to_exit_screen,
+            currentRoute.getReadableRouteName()
+        ),
+        positiveText = stringResource(R.string.exit),
+        negativeText = stringResource(R.string.cancel),
         enabled = showExitDialog,
         onConfirm = {
             if(currentRoute == Constants.DEFAULT_STARTING_ROUTE_NAME) {

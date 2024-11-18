@@ -13,12 +13,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.eyal.exam.pelecard.R
 import com.eyal.exam.pelecard.abs.Constants
 
 
 @Composable
 fun CurrencyPicker(modifier: Modifier = Modifier, currency: String, onCurrencySelected: (String) -> Unit) {
     var selectedCurrency by remember { mutableStateOf(currency.ifEmpty { Constants.DEFAULT_CURRENCY }) }
+    val usd = stringResource(R.string.currency_usd)
+    val ils = stringResource(R.string.currency_ils)
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -26,26 +30,26 @@ fun CurrencyPicker(modifier: Modifier = Modifier, currency: String, onCurrencySe
     ) {
         Button(
             onClick = {
-                selectedCurrency = "USD"
+                selectedCurrency = usd
                 onCurrencySelected(selectedCurrency)
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = if (selectedCurrency == "USD") Color.White else Color.LightGray
+                backgroundColor = if (selectedCurrency == usd) Color.White else Color.LightGray
             )
         ) {
-            Text("USD") // todo extract hardcoded text to R.strings?
+            Text(usd)
         }
 
         Button(
             onClick = {
-                selectedCurrency = "ILS"
+                selectedCurrency = ils
                 onCurrencySelected(selectedCurrency)
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = if (selectedCurrency == "ILS") Color.White else Color.LightGray
+                backgroundColor = if (selectedCurrency == ils) Color.White else Color.LightGray
             )
         ) {
-            Text("ILS")
+            Text(ils)
         }
     }
 }

@@ -10,11 +10,15 @@ data class PaymentDetails(
     val id: Int = 0,
 
     val amount: Double,
+
     val isPayments: Boolean,
     val numberOfPayments: Int,
+
     val isSignature: Boolean,
-    val currency: String,
     val signatureFilePath: String? = null,
+
+    val isCurrency: Boolean,
+    val currency: String,
 
     val isCompleted: Boolean = false
 )

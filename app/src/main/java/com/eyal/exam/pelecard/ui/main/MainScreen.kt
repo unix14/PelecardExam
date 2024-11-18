@@ -1,7 +1,6 @@
 package com.eyal.exam.pelecard.ui.main
 
 import android.os.Build
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +14,6 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
@@ -32,21 +29,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.eyal.exam.pelecard.MainActivity
+import com.eyal.exam.pelecard.R
+import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.ui.common_ui.ActionButton
 import com.eyal.exam.pelecard.ui.common_ui.AnalogClockComposable
-import com.eyal.exam.pelecard.ui.common_ui.CurrencyPicker
-import com.eyal.exam.pelecard.models.SettingId
 import com.eyal.exam.pelecard.ui.common_ui.AreYouSureDialog
+import com.eyal.exam.pelecard.ui.common_ui.CurrencyPicker
 import com.eyal.exam.pelecard.ui.common_ui.PeleAppBar
+import com.eyal.exam.pelecard.ui.common_ui.SettingsItemRow
 
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen( // todo think about how to reduce code from here and refactor what can be refactored
+fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
 ) {
     val activity = LocalContext.current as? MainActivity
@@ -63,14 +62,15 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        PeleAppBar("Main",
+        PeleAppBar(
+            stringResource(R.string.main),
             leftIcon = Icons.Outlined.Info,
-            leftButtonDescription = "Information Icon",
+            leftButtonDescription = stringResource(R.string.information_icon),
             onLeftClick = {
                 viewModel.goToInfo()
             },
             rightIcon = Icons.Outlined.Settings,
-            rightButtonDescription = "Settings Icon",
+            rightButtonDescription = stringResource(R.string.settings_icon),
             onRightClick = {
                 viewModel.goToSettings()
             }
@@ -81,7 +81,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             AnalogClockComposable()
         } else {
-            Text("Analog clock is not supported on this device")
+            Text(stringResource(R.string.analog_clock_unavailable_error_msg))
         }
         Spacer(modifier = Modifier.weight(1f))
 
@@ -90,8 +90,8 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                 paymentDetails.amount.toString()
             } else "",
             isError = paymentDetails.amount <= 0,
-            label = { Text("Amount") },
-            placeholder = { Text("Enter amount") },
+            label = { Text(stringResource(R.string.amount)) },
+            placeholder = { Text(stringResource(R.string.enter_amount)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
             ),
@@ -119,14 +119,10 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Payments:")
-                Switch(
-                    checked = paymentDetails.isPayments,
-                    onCheckedChange = { isPayments ->
-                        viewModel.updatePaymentDetails(paymentDetails.copy(isPayments = isPayments))
-                    },
-                    modifier = Modifier.padding(start = 8.dp)
-                )
+
+                SettingsItemRow(text = stringResource(R.string.payments), isOn = paymentDetails.isPayments, isFullWidth = false) { isPayments ->
+                    viewModel.updatePaymentDetails(paymentDetails.copy(isPayments = isPayments))
+                }
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -136,7 +132,6 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                         onExpandedChange = {
                             isAmountOfPaymentsListExpanded = it
                         },) {
-
                         TextField(
                             value = paymentDetails.numberOfPayments.toString(),
                             onValueChange = {},
@@ -144,7 +139,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isAmountOfPaymentsListExpanded)
                             },
-                            label = { Text("# of payments") },
+                            label = { Text(stringResource(R.string.number_of_payments)) },
                             colors = ExposedDropdownMenuDefaults.textFieldColors(),
                         )
                         ExposedDropdownMenu(
@@ -186,7 +181,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Currency:")
+                Text(stringResource(R.string.currency))
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -201,16 +196,15 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
         
         // show signature only if the setting is enabled
         if(settingsConfig?.settingsMap?.get(SettingId.SIGNATURE)?.value == true) {
-            Row(
+            SettingsItemRow(
+                text = stringResource(R.string.signature),
+                isOn = paymentDetails.isSignature,
+                isFullWidth = false,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text("Signature:")
-                Switch(checked = paymentDetails.isSignature, onCheckedChange = { isSignature ->
+                    .align(Alignment.Start)
+                    .padding(16.dp)
+            ) { isSignature ->
                     viewModel.updatePaymentDetails(paymentDetails.copy(isSignature = isSignature))
-                })
             }
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -222,7 +216,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             ActionButton(
-                text = "Submit",
+                text = stringResource(R.string.submit),
                 color = Color.Green,
                 isEnabled = paymentDetails.amount > 0,
                 onClick = {
@@ -230,7 +224,7 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
                 },
             )
             ActionButton(
-                text = "Exit",
+                text = stringResource(R.string.exit),
                 color = Color.Red,
                 onClick = {
                     showExitDialog = true
@@ -241,8 +235,8 @@ fun MainScreen( // todo think about how to reduce code from here and refactor wh
     }
 
     AreYouSureDialog(
-        title = "Exit App",
-        subtitle = "Are you sure you want to exit this Exam App for Pelecard ?",
+        title = stringResource(R.string.exit_app),
+        subtitle = stringResource(R.string.exit_app_msg),
         onConfirm = {
             activity?.finish()
             showExitDialog = false
